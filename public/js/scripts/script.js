@@ -7,10 +7,11 @@ let algorithms = {
 let mode = modes.initial
 let algorithm = algorithms.mergeSort
 
-const SEARCH_TIME = 20
+const SEARCH_TIME = 5000
 const RESET_GRAPH_MESSAGE = "Reset Graph First"
 
 document.addEventListener('DOMContentLoaded', () => {
+    array = generateArray(arrayLength)
     showAlgorithmList()
     updateVisualizerButton()
     plotGraph()
@@ -44,17 +45,20 @@ function visualizerButtonHandler () {
     let visualizerButton = document.querySelector('#visualize_btn')
     let statusMessage = document.querySelector('#status_message')
     visualizerButton.addEventListener('click', async event => {
-        if (mode === modes.done) {
-            resetGraph()
-        }
+        // if (mode === modes.done) {
+        //     resetGraph()
+        // }
         mode = modes.sorting
         statusMessage.innerHTML = ''
         statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i>`)
         let result = {}
+        let animation = []
         if (algorithm.key===algorithms.mergeSort.key) {
-            result = mergeSort.sort(array)
+            console.log(array, 'input')
+            result = mergeSort.sort([...array], animation)
+            console.log(result, 'result')
         }
-        await visualizeSortingAnimation(result.animation)
+        await visualizeSortingAnimation(animation)
         statusMessage.innerHTML = `Sorting Completed`
         mode = modes.done
     })
@@ -66,6 +70,7 @@ function resetButtonHandler () {
         if (mode===modes.initial||mode===modes.done){
             let statusMessage = document.querySelector('#status_message')
             statusMessage.innerHTML = ''
+            array = generateArray(arrayLength)
             resetGraph()
             mode = modes.initial
         }
@@ -75,9 +80,9 @@ function resetButtonHandler () {
 function sizeSliderHandler () {
     let sizeSlider = document.querySelector('#size_slider')
     sizeSlider.addEventListener('input', event => {
-        console.log(event)
         if (mode===modes.initial||mode===modes.done){
             arrayLength = sizeSlider.value
+            array = generateArray(arrayLength)
             resetGraph()
         }
     })
@@ -110,9 +115,9 @@ function updateVisualizerButton() {
 }
 
 function plotGraph() {
-    array = generateArray(arrayLength)
     let graphBody = document.querySelector('#graph_body')
     let nodeWidth = Math.floor(graphBody.offsetWidth/array.length*0.7)
+    graphBody.innerHTML = ''
     array.map( (number, index) => {
         graphBody.insertAdjacentHTML('beforeend', `<div class="node text-white text-center" id="node_${index}">${number}</div>`)
         let node = graphBody.querySelector(`#node_${index}`)
@@ -128,19 +133,40 @@ function resetGraph() {
     plotGraph()
 }
 
-async function activatePoint(point, delay=0) {
-    let node = document
-        .querySelector('#graph_body')
-        .querySelector(`#node_row_${point[0]}`)
-        .querySelector(`#node_${point[0]}_${point[1]}`)
-    node.classList.add('node-initiate-activation')
-    await sleep(delay)
-    node.classList.remove('node-initiate-activation')
-    node.classList.add('node-active')
-}
-
 async function visualizeSortingAnimation(animation) {
-    for(let point of animation) {
-        await activatePoint(point, Math.round(SEARCH_TIME))
+    for (let set of animation) {
+        // console.log(array, 'before')
+        if (set.hasOwnProperty('numbers')) {
+            let indices = []
+            let nodes = []
+            set.numbers.map( number => {
+                let index = array.indexOf(number)
+                indices.push(index)
+                nodes.push(document
+                    .querySelector('#graph_body')
+                    .querySelector(`#node_${index}`))
+            })
+            console.log(indices, set.numbers, 'from array')
+            // console.log(set.indices, set.numbers, 'from animation')
+            console.log(set.numbers)
+            nodes.map(node => node.classList.add(set.sorted ? 'node-sorted' : 'node-not-sorted'))
+            await sleep(SEARCH_TIME/animation.length)
+            if (!set.sorted) {
+                let temp = array[indices[1]]
+                for (let i=indices[1]; i>indices[0]; i--) {
+                    array[i] = array[i-1]
+                }
+                array[indices[0]] = temp
+                plotGraph()
+            } else {
+                nodes.map(node => node.classList.remove('node-sorted'))
+            }
+        } else {
+
+        }
+        // console.log(array, 'after')
     }
+    // array = result.output
+    console.log(animation)
+    // plotGraph()
 }
