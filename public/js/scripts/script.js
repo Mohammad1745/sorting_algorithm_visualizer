@@ -112,7 +112,7 @@ function updateVisualizerButton() {
     statusMessage.innerHTML = ``
 }
 
-function plotGraph() {
+function plotGraph(unsorted=[]) {
     let graphBody = document.querySelector('#graph_body')
     let nodeWidth = Math.floor(graphBody.offsetWidth/array.length*0.7)
     graphBody.innerHTML = ''
@@ -122,6 +122,7 @@ function plotGraph() {
         node.style.height = number+"px"
         node.style.width = nodeWidth+"px"
         node.style.fontSize = (nodeWidth/3)+"px"
+        if (unsorted.length && unsorted.includes(index)) node.classList.add('node-unsorted')
     })
 }
 
@@ -140,7 +141,7 @@ async function visualizeSortingAnimation(animation) {
                     .querySelector('#graph_body')
                     .querySelector(`#node_${index}`))
             })
-            nodes.map(node => node.classList.add(set.sorted ? 'node-sorted' : 'node-unsorted'))
+            nodes.map(node =>  node.classList.add(set.sorted ? 'node-sorted' : 'node-unsorted'))
             await sleep(SEARCH_TIME/array.length)
             if (!set.sorted) {
                 let temp = array[set.indices[1]]
@@ -148,9 +149,15 @@ async function visualizeSortingAnimation(animation) {
                     array[i] = array[i-1]
                 }
                 array[set.indices[0]] = temp
-                plotGraph()
+                plotGraph(set.indices)
+                await sleep(SEARCH_TIME/(array.length*2))
+                set.indices.map(index => {
+                    let node = document.querySelector('#graph_body').querySelector(`#node_${index}`)
+                    node.classList.remove('node-unsorted')
+                })
+                await sleep(SEARCH_TIME/(array.length*2))
             } else {
-                nodes.map(node => node.classList.remove('node-sorted'))
+                nodes.map((node, index) => node.classList.remove('node-sorted'))
             }
         }
     }

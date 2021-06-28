@@ -1,6 +1,7 @@
 :root {
     --primary: #aaa;
     --secondary: #777;
+    --dark: #333;
     --sorted: #0053ACFF;
     --unsorted: #FF53AC;
 }
@@ -53,6 +54,9 @@ App
     margin: 0 2px;
     height: 20px;
     width: 20px;
+    border-bottom: var(--dark) 1px solid;
+    border-left: var(--dark) 1px solid;
+    border-right: var(--dark) 1px solid;
     background-color: var(--secondary);
 }
 
