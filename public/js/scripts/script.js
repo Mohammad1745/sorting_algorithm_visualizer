@@ -1,5 +1,5 @@
 let array = [1]
-let arrayLength = 5
+let arrayLength = 50
 let modes = {initial: 1, sorting: 2, done:3}
 let algorithms = {
     mergeSort: {key:6, name: "Merge Sort", description: `Merge Sort`},
@@ -54,9 +54,7 @@ function visualizerButtonHandler () {
         let result = {}
         let animation = []
         if (algorithm.key===algorithms.mergeSort.key) {
-            console.log(array, 'input')
-            result = mergeSort.sort([...array], animation)
-            console.log(result, 'result')
+            mergeSort.sort([...array], animation)
         }
         await visualizeSortingAnimation(animation)
         statusMessage.innerHTML = `Sorting Completed`
@@ -135,38 +133,25 @@ function resetGraph() {
 
 async function visualizeSortingAnimation(animation) {
     for (let set of animation) {
-        // console.log(array, 'before')
         if (set.hasOwnProperty('numbers')) {
-            let indices = []
             let nodes = []
-            set.numbers.map( number => {
-                let index = array.indexOf(number)
-                indices.push(index)
+            set.numbers.map( (number, index) => {
                 nodes.push(document
                     .querySelector('#graph_body')
-                    .querySelector(`#node_${index}`))
+                    .querySelector(`#node_${set.indices[index]}`))
             })
-            console.log(indices, set.numbers, 'from array')
-            // console.log(set.indices, set.numbers, 'from animation')
-            console.log(set.numbers)
             nodes.map(node => node.classList.add(set.sorted ? 'node-sorted' : 'node-not-sorted'))
-            await sleep(SEARCH_TIME/animation.length)
+            await sleep(SEARCH_TIME/array.length)
             if (!set.sorted) {
-                let temp = array[indices[1]]
-                for (let i=indices[1]; i>indices[0]; i--) {
+                let temp = array[set.indices[1]]
+                for (let i=set.indices[1]; i>set.indices[0]; i--) {
                     array[i] = array[i-1]
                 }
-                array[indices[0]] = temp
+                array[set.indices[0]] = temp
                 plotGraph()
             } else {
                 nodes.map(node => node.classList.remove('node-sorted'))
             }
-        } else {
-
         }
-        // console.log(array, 'after')
     }
-    // array = result.output
-    console.log(animation)
-    // plotGraph()
 }
