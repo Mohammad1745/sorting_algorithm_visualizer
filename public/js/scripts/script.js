@@ -2,12 +2,13 @@ let array = [1]
 let arrayLength = 50
 let modes = {initial: 1, sorting: 2, done:3}
 let algorithms = {
-    mergeSort: {key:6, name: "Merge Sort", description: `Merge Sort`},
+    mergeSort: {key:1, name: "Merge Sort", description: `Merge Sort`},
+    bubbleSort: {key:2, name: "Bubble Sort", description: `Bubble Sort`},
 }
 let mode = modes.initial
 let algorithm = algorithms.mergeSort
 
-const SEARCH_TIME = 5000
+const SEARCH_TIME = 10000
 const RESET_GRAPH_MESSAGE = "Reset Graph First"
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -39,15 +40,17 @@ function algorithmInputHandler() {
         algorithm = algorithms.mergeSort
         updateVisualizerButton()
     })
+    let bubbleSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.bubbleSort.key}`)
+    bubbleSortAlgorithm.addEventListener('click', () => {
+        algorithm = algorithms.bubbleSort
+        updateVisualizerButton()
+    })
 }
 
 function visualizerButtonHandler () {
     let visualizerButton = document.querySelector('#visualize_btn')
     let statusMessage = document.querySelector('#status_message')
     visualizerButton.addEventListener('click', async event => {
-        // if (mode === modes.done) {
-        //     resetGraph()
-        // }
         mode = modes.sorting
         statusMessage.innerHTML = ''
         statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i>`)
@@ -55,6 +58,9 @@ function visualizerButtonHandler () {
         let animation = []
         if (algorithm.key===algorithms.mergeSort.key) {
             mergeSort.sort([...array], animation)
+        }
+        if (algorithm.key===algorithms.bubbleSort.key) {
+            bubbleSort.sort([...array], animation)
         }
         await visualizeSortingAnimation(animation)
         statusMessage.innerHTML = `Sorting Completed`
@@ -142,7 +148,7 @@ async function visualizeSortingAnimation(animation) {
                     .querySelector(`#node_${index}`))
             })
             nodes.map(node =>  node.classList.add(set.sorted ? 'node-sorted' : 'node-unsorted'))
-            await sleep(SEARCH_TIME/array.length)
+            await sleep(SEARCH_TIME/animation.length)
             if (!set.sorted) {
                 let temp = array[set.indices[1]]
                 for (let i=set.indices[1]; i>set.indices[0]; i--) {
@@ -150,12 +156,12 @@ async function visualizeSortingAnimation(animation) {
                 }
                 array[set.indices[0]] = temp
                 plotGraph(set.indices)
-                await sleep(SEARCH_TIME/(array.length*2))
+                await sleep(SEARCH_TIME/(animation.length*2))
                 set.indices.map(index => {
                     let node = document.querySelector('#graph_body').querySelector(`#node_${index}`)
                     node.classList.remove('node-unsorted')
                 })
-                await sleep(SEARCH_TIME/(array.length*2))
+                await sleep(SEARCH_TIME/(animation.length*2))
             } else {
                 nodes.map((node, index) => node.classList.remove('node-sorted'))
             }
