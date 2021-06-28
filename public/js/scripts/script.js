@@ -1,4 +1,4 @@
-let array = [5,4,3,2,1]
+let array = [50,40,30,20,10]
 let modes = {initial: 1, sorting: 2, done:3}
 let algorithms = {
     mergeSort: {key:6, name: "Merge Sort", description: `Merge Sort`},
@@ -7,7 +7,7 @@ let mode = modes.initial
 let algorithm = algorithms.mergeSort
 
 const SEARCH_TIME = 20
-const CLEAR_GRAPH_MESSAGE = "Reset Graph First"
+const RESET_GRAPH_MESSAGE = "Reset Graph First"
 
 document.addEventListener('DOMContentLoaded', () => {
     showAlgorithmList()
@@ -43,7 +43,7 @@ function visualizerButtonHandler () {
     let statusMessage = document.querySelector('#status_message')
     visualizerButton.addEventListener('click', async event => {
         if (mode === modes.done) {
-            clearGraph()
+            resetGraph()
         }
         mode = modes.sorting
         statusMessage.innerHTML = ''
@@ -64,7 +64,7 @@ function resetButtonHandler () {
         if (mode===modes.initial||mode===modes.done){
             let statusMessage = document.querySelector('#status_message')
             statusMessage.innerHTML = ''
-            clearGraph(true, true)
+            resetGraph()
             mode = modes.initial
         }
     })
@@ -98,9 +98,16 @@ function updateVisualizerButton() {
 
 function plotGraph() {
     let graphBody = document.querySelector('#graph_body')
+    let nodeWidth = Math.floor(graphBody.offsetWidth/array.length*0.7)
+    array.map( (number, index) => {
+        graphBody.insertAdjacentHTML('beforeend', `<div class="node text-white text-center" id="node_${index}">${number}</div>`)
+        let node = graphBody.querySelector(`#node_${index}`)
+        node.style.height = number+"px"
+        node.style.width = nodeWidth+"px"
+    })
 }
 
-function clearGraph(clearWall=false, clearWeight=false) {
+function resetGraph() {
     let graphBody = document.querySelector('#graph_body')
     let nodeSize = Math.floor(graphBody.offsetWidth-1)
 }

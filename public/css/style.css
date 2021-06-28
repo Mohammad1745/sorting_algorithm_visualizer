@@ -50,9 +50,16 @@ App
 }
 .graph-body {
     min-height: 80vh;
+    justify-content: center;
     border-top: var(--primary) 1px solid;
     border-bottom: var(--primary) 1px solid;
 }
+.node {
+    margin: 0 2px;
+    width: 25px;
+    background-color: var(--secondary);
+}
+
 .algorithm-info {
     display: none;
     position: absolute;
