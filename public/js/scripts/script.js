@@ -133,12 +133,12 @@ function resetGraph() {
 
 async function visualizeSortingAnimation(animation) {
     for (let set of animation) {
-        if (set.hasOwnProperty('numbers')) {
+        if (set.hasOwnProperty('indices')) {
             let nodes = []
-            set.numbers.map( (number, index) => {
+            set.indices.map( index => {
                 nodes.push(document
                     .querySelector('#graph_body')
-                    .querySelector(`#node_${set.indices[index]}`))
+                    .querySelector(`#node_${index}`))
             })
             nodes.map(node => node.classList.add(set.sorted ? 'node-sorted' : 'node-not-sorted'))
             await sleep(SEARCH_TIME/array.length)

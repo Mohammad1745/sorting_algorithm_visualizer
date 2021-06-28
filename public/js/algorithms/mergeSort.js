@@ -12,12 +12,12 @@ let mergeSort = {
         let i = 0
         while(l<left.length&&r<right.length){
             if (left[l]<=right[r]) {
-                animation.push({numbers: [left[l], right[r]], indices:[i+index, r+index+middleIndex], sorted:true})
+                animation.push({indices:[i+index, r+index+middleIndex], sorted:true})
                 input[i]=left[l]
                 i++
                 l++
             } else {
-                animation.push({numbers: [left[l], right[r]], indices:[i+index, r+index+middleIndex], sorted:false})
+                animation.push({indices:[i+index, r+index+middleIndex], sorted:false})
                 input[i]=right[r]
                 i++
                 r++
