@@ -1,4 +1,5 @@
-let array = [50,40,30,20,10]
+let array = [1]
+let arrayLength = 5
 let modes = {initial: 1, sorting: 2, done:3}
 let algorithms = {
     mergeSort: {key:6, name: "Merge Sort", description: `Merge Sort`},
@@ -97,6 +98,7 @@ function updateVisualizerButton() {
 }
 
 function plotGraph() {
+    array = generateArray(arrayLength)
     let graphBody = document.querySelector('#graph_body')
     let nodeWidth = Math.floor(graphBody.offsetWidth/array.length*0.7)
     array.map( (number, index) => {
@@ -109,7 +111,8 @@ function plotGraph() {
 
 function resetGraph() {
     let graphBody = document.querySelector('#graph_body')
-    let nodeSize = Math.floor(graphBody.offsetWidth-1)
+    graphBody.innerHTML = ''
+    plotGraph()
 }
 
 async function activatePoint(point, delay=0) {

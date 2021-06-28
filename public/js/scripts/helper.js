@@ -1,6 +1,9 @@
-function distance( a, b) {
-    // return Math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
-    return Math.abs((a[0]-b[0])) + Math.abs((a[1]-b[1]))
+function generateArray(length = 5) {
+    let array = []
+    for (let i=0; i<length; i++) {
+        array.push(randomNumber(5, 600))
+    }
+    return array
 }
 
 Array.prototype.equals = function(arr2) {
@@ -11,10 +14,10 @@ Array.prototype.equals = function(arr2) {
 }
 
 const randomNumber = (min, max, except=null) => {
-    let number = min+Math.random()*max
+    let number = Math.round(min+Math.random()*max)
     if (except) {
         while (number===except){
-            number = min+Math.random()*max
+            number = Math.round(min+Math.random()*max)
         }
     }
     return number;
