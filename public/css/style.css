@@ -45,6 +45,9 @@ App
 .navbar-nav .nav-item .nav-link{
     color: rgba(255,255,255,.9);
 }
+.size-slider {
+    width: 200px;
+}
 .graph {
     border-top: var(--primary) 1px solid;
 }

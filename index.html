@@ -41,12 +41,16 @@
                 <li class="nav-item">
                     <button class="nav-link ml-2 btn btn-danger font-weight-bold" id="reset_btn">Reset</button>
                 </li>
+                <li class="nav-item">
+                    <div class="slider-title text-white mt-1 text-center">Size & Speed</div>
+                    <input type="range" min="5" max="50" value="5" class="size-slider ml-3" id="size_slider">
+                </li>
             </ul>
         </div>
     </nav>
 
     <!-- Graph -->
-    <div class="graph m-3" id="graph">
+    <div class="graph ml-3 mb-3 mr-3" id="graph">
         <div class="graph-header" id="graph_header">
             <div class="row m-0 p-2">
                 <div class="ml-3 text-light"> Algorithm: </div><div class="text-light ml-2" id="algorithm_message"></div>

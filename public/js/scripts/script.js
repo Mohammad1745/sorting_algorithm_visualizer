@@ -21,6 +21,7 @@ function handleUserEvent () {
     algorithmInputHandler()
     visualizerButtonHandler()
     resetButtonHandler()
+    sizeSliderHandler()
     algorithmInfoHandler()
 }
 
@@ -71,6 +72,17 @@ function resetButtonHandler () {
     })
 }
 
+function sizeSliderHandler () {
+    let sizeSlider = document.querySelector('#size_slider')
+    sizeSlider.addEventListener('input', event => {
+        console.log(event)
+        if (mode===modes.initial||mode===modes.done){
+            arrayLength = sizeSlider.value
+            resetGraph()
+        }
+    })
+}
+
 function algorithmInfoHandler() {
     let algorithmInfoButton = document.querySelector('#graph_header').querySelector('.algorithm-info-btn')
     algorithmInfoButton.addEventListener('click', event => {
@@ -106,6 +118,7 @@ function plotGraph() {
         let node = graphBody.querySelector(`#node_${index}`)
         node.style.height = number+"px"
         node.style.width = nodeWidth+"px"
+        node.style.fontSize = (nodeWidth/3)+"px"
     })
 }
 
