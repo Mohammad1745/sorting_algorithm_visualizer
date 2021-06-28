@@ -2,7 +2,7 @@
     --primary: #aaa;
     --secondary: #777;
     --sorted: #0053ACFF;
-    --not-sorted: #FF53AC;
+    --unsorted: #FF53AC;
 }
 /*body {*/
 /*    background-color: var(--primary);*/
@@ -51,7 +51,8 @@ App
 }
 .node {
     margin: 0 2px;
-    width: 25px;
+    height: 20px;
+    width: 20px;
     background-color: var(--secondary);
 }
 
@@ -75,6 +76,6 @@ App
 .node-sorted {
     background-color: var(--sorted);
 }
-.node-not-sorted {
-    background-color: var(--not-sorted);
+.node-unsorted {
+    background-color: var(--unsorted);
 }

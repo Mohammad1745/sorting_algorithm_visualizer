@@ -140,7 +140,7 @@ async function visualizeSortingAnimation(animation) {
                     .querySelector('#graph_body')
                     .querySelector(`#node_${index}`))
             })
-            nodes.map(node => node.classList.add(set.sorted ? 'node-sorted' : 'node-not-sorted'))
+            nodes.map(node => node.classList.add(set.sorted ? 'node-sorted' : 'node-unsorted'))
             await sleep(SEARCH_TIME/array.length)
             if (!set.sorted) {
                 let temp = array[set.indices[1]]
