@@ -1,0 +1,81 @@
+:root {
+    --primary: #aaa;
+    --secondary: #777;
+    --initiate-activation: #ddf;
+    --animate-activation: #5566ff;
+    --active: #0053ACFF;
+    --initate-path: #f77;
+    --animate-path: #ca4;
+    --path: #4a4;
+    --initiate-wall: #555;
+    --animate-wall: #ddd;
+    --wall: #000;
+    --weight: #d94;
+}
+/*body {*/
+/*    background-color: var(--primary);*/
+/*}*/
+.cursor-pointer {
+    cursor: pointer;
+}
+.fa-spinner {
+    -webkit-animation:spin 3s linear infinite;
+    -moz-animation:spin 3s linear infinite;
+    animation:spin 3s linear infinite;
+}
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform:rotate(360deg);
+    }
+}
+/*
+App
+*/
+.navbar-brand{
+    font-weight: bold;
+    font-family: sans-serif;
+}
+.navbar-nav{
+    font-size: 15px;
+}
+.navbar-nav button{
+    font-size: 15px;
+}
+.navbar-nav .nav-item .nav-link{
+    color: rgba(255,255,255,.9);
+}
+.graph {
+    border-top: var(--primary) 1px solid;
+}
+.graph-body {
+    min-height: 80vh;
+    border-top: var(--primary) 1px solid;
+    border-bottom: var(--primary) 1px solid;
+}
+.algorithm-info {
+    display: none;
+    position: absolute;
+    top: 125px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    min-width: 25%;
+    z-index: 100;
+}
+.algorithm-info-header {
+    font-weight: bold;
+    font-size: 20px;
+}
+.algorithm-info-cancel-btn {
+    position: relative;
+    float: right;
+}
+
+@keyframes activation {
+    0%{
+        background-color: var(--animate-activation);
+    }
+    100% {
+        background-color: var(--active);
+    }
+}
