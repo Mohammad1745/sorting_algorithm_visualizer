@@ -19,7 +19,7 @@ let quickSort = {
                 animation.push({indices:[i, j, pivot], numbers: [array[i], array[j]],sorted: i===j})
 
             } else {
-                animation.push({indices:[j, pivot], sorted: true})
+                animation.push({indices:[j, j, pivot], sorted: true})
             }
         }
         i++

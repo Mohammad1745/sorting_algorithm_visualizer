@@ -139,7 +139,7 @@ function plotGraph(unsorted=[]) {
         node.style.width = nodeWidth+"px"
         node.style.fontSize = (nodeWidth/3)+"px"
         if (unsorted.length && unsorted.includes(index)) {
-            if (index === 2) node.classList.add('node-pivot')
+            if (unsorted[2] === index) node.classList.add('node-pivot')
             else node.classList.add('node-unsorted')
         }
     })
@@ -214,6 +214,6 @@ async function visualizeTripleNodes(set, animation) {
         })
         await sleep(SEARCH_TIME/(animation.length*2))
     } else {
-        nodes.map((node) => node.classList.remove('node-sorted'))
+        nodes.map((node) => node.classList.remove('node-sorted', 'node-pivot'))
     }
 }
