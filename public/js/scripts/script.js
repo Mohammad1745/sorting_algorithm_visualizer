@@ -3,12 +3,13 @@ let arrayLength = 50
 let modes = {initial: 1, sorting: 2, done:3}
 let algorithms = {
     mergeSort: {key:1, name: "Merge Sort", description: `Merge Sort`},
-    quickSort: {key:3, name: "Quick Sort", description: `Quick Sort`},
-    bubbleSort: {key:2, name: "Bubble Sort", description: `Bubble Sort`},
+    quickSort: {key:2, name: "Quick Sort", description: `Quick Sort`},
+    bubbleSort: {key:3, name: "Bubble Sort", description: `Bubble Sort`},
     selectionSort: {key:4, name: "Selection Sort", description: `Selection Sort`},
+    insertionSort: {key:5, name: "Insertion Sort", description: `Insertion Sort`},
 }
 let mode = modes.initial
-let algorithm = algorithms.selectionSort
+let algorithm = algorithms.insertionSort
 
 const SEARCH_TIME = 10000
 const RESET_GRAPH_MESSAGE = "Reset Graph First"
@@ -58,6 +59,11 @@ function algorithmInputHandler() {
         algorithm = algorithms.selectionSort
         updateVisualizerButton()
     })
+    let insertionSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.insertionSort.key}`)
+    insertionSortAlgorithm.addEventListener('click', () => {
+        algorithm = algorithms.insertionSort
+        updateVisualizerButton()
+    })
 }
 
 function visualizerButtonHandler () {
@@ -84,8 +90,11 @@ function visualizerButtonHandler () {
             selectionSort.sort([...array], animation)
             await visualizeSortingAnimation(animation)
         }
+        if (algorithm.key===algorithms.insertionSort.key) {
+            insertionSort.sort([...array], animation)
+            await visualizeSortingAnimation(animation, true)
+        }
         let movesCount = animation.filter(set => !set.sorted).length
-
         statusMessage.innerHTML = `Sorting Completed | Total Moves: ${movesCount}`
         mode = modes.done
     })
