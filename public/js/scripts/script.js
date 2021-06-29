@@ -26,6 +26,7 @@ function handleUserEvent () {
     resetButtonHandler()
     sizeSliderHandler()
     algorithmInfoHandler()
+    customInputHandler()
 }
 
 function showAlgorithmList() {
@@ -116,6 +117,37 @@ function algorithmInfoHandler() {
     algorithmInfoCancelButton.addEventListener('click', event => {
         let algorithmInfo = document.querySelector('#algorithm_info')
         algorithmInfo.style.display = "none"
+    })
+}
+
+function customInputHandler() {
+    let customInputButton = document.querySelector('#custom_input_btn')
+    customInputButton.addEventListener('click', event => {
+        let customInput = document.querySelector('#custom_input')
+        customInput.style.display = "flex"
+    })
+    let customInputCancelButton = document.querySelector('#custom_input_cancel_btn')
+    customInputCancelButton.addEventListener('click', event => {
+        let customInput = document.querySelector('#custom_input')
+        customInput.style.display = "none"
+    })
+    let customInputSubmitButton = document.querySelector('#custom_input_submit_btn')
+    customInputSubmitButton.addEventListener('click', event => {
+        let customInputField = document.querySelector('#custom_input_field')
+        let input = customInputField.value
+        input = input.split(',').map(value => {
+            let number = Number(value)
+            if (number<5) number = 5
+            if (number>500) number =500
+            return number
+        })
+        if (input.includes(NaN)) alert('Invalid Input')
+        else {
+            array = input
+            arrayLength = array.length
+            plotGraph()
+            customInputCancelButton.click()
+        }
     })
 }
 

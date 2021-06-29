@@ -61,6 +61,7 @@ App
     background-color: var(--secondary);
 }
 
+.custom-input,
 .algorithm-info {
     display: none;
     position: absolute;
@@ -70,10 +71,12 @@ App
     min-width: 25%;
     z-index: 100;
 }
+.custom-input-header,
 .algorithm-info-header {
     font-weight: bold;
     font-size: 20px;
 }
+.custom-input-cancel-btn,
 .algorithm-info-cancel-btn {
     position: relative;
     float: right;

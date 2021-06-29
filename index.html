@@ -47,6 +47,9 @@
                     <div class="slider-title text-white mt-1 text-center">Size & Speed</div>
                     <input type="range" min="5" max="100" value="50" class="size-slider ml-3" id="size_slider">
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link ml-2 cursor-pointer font-weight-bold" id="custom_input_btn">Custom Input <i class="fas fa-sort-down ml-1"></i></a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -81,6 +84,20 @@
                     <i class="fas fa-envelope ml-2"></i> mdali2016.227@gmail.com
                 </div>
             </div>
+        </div>
+    </div>
+    <!-- Custom Input Popup -->
+    <div class="card custom-input" id="custom_input">
+        <div class="card-header">
+            <span class="custom-input-header" id="custom_input_header">Custom Input</span>
+            <span class="custom-input-cancel-btn cursor-pointer" id="custom_input_cancel_btn"><i class="fas fa-times-circle"></i></span>
+        </div>
+        <div class="card-body custom-input-body" id="custom_input_body">
+            <div class="form-group">
+                <label for="custom_input_field">Range: 5, 500</label>
+                <textarea name="customInput" class="form-control" id="custom_input_field" cols="30" rows="5" placeholder="2, 6, 5"></textarea>
+            </div>
+            <button type="button" class="btn btn-outline-info" id="custom_input_submit_btn">Submit</button>
         </div>
     </div>
     <!-- Algorithm Details Popup -->
