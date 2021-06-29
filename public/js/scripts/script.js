@@ -60,7 +60,6 @@ function visualizerButtonHandler () {
         mode = modes.sorting
         statusMessage.innerHTML = ''
         statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i>`)
-        console.log(array, 'array')
         let animation = []
         if (algorithm.key===algorithms.mergeSort.key) {
             mergeSort.sort([...array], animation)
@@ -71,9 +70,10 @@ function visualizerButtonHandler () {
         if (algorithm.key===algorithms.quickSort.key) {
             quickSort.sort([...array], animation)
         }
+        let movesCount = animation.filter(set => !set.sorted).length
         await visualizeSortingAnimation(animation)
 
-        statusMessage.innerHTML = `Sorting Completed`
+        statusMessage.innerHTML = `Sorting Completed | Total Moves: ${movesCount}`
         mode = modes.done
     })
 }
@@ -152,7 +152,6 @@ function resetGraph() {
 }
 
 async function visualizeSortingAnimation(animation) {
-    console.log(animation)
     for (let set of animation) {
         if (set.indices.length===2) {
             await visualizeDoubleNodes(set, animation)
