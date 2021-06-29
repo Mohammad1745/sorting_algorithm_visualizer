@@ -3,6 +3,7 @@
     --secondary: #777;
     --dark: #333;
     --sorted: #0053ACFF;
+    --pivot: #DDFF55;
     --unsorted: #FF53AC;
 }
 /*body {*/
@@ -82,4 +83,7 @@ App
 }
 .node-unsorted {
     background-color: var(--unsorted);
+}
+.node-pivot {
+    background-color: var(--pivot);
 }

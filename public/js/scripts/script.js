@@ -4,6 +4,7 @@ let modes = {initial: 1, sorting: 2, done:3}
 let algorithms = {
     mergeSort: {key:1, name: "Merge Sort", description: `Merge Sort`},
     bubbleSort: {key:2, name: "Bubble Sort", description: `Bubble Sort`},
+    quickSort: {key:3, name: "Quick Sort", description: `Quick Sort`},
 }
 let mode = modes.initial
 let algorithm = algorithms.mergeSort
@@ -45,6 +46,11 @@ function algorithmInputHandler() {
         algorithm = algorithms.bubbleSort
         updateVisualizerButton()
     })
+    let quickSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.quickSort.key}`)
+    quickSortAlgorithm.addEventListener('click', () => {
+        algorithm = algorithms.quickSort
+        updateVisualizerButton()
+    })
 }
 
 function visualizerButtonHandler () {
@@ -54,7 +60,7 @@ function visualizerButtonHandler () {
         mode = modes.sorting
         statusMessage.innerHTML = ''
         statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i>`)
-        let result = {}
+        console.log(array, 'array')
         let animation = []
         if (algorithm.key===algorithms.mergeSort.key) {
             mergeSort.sort([...array], animation)
@@ -62,7 +68,11 @@ function visualizerButtonHandler () {
         if (algorithm.key===algorithms.bubbleSort.key) {
             bubbleSort.sort([...array], animation)
         }
+        if (algorithm.key===algorithms.quickSort.key) {
+            quickSort.sort([...array], animation)
+        }
         await visualizeSortingAnimation(animation)
+
         statusMessage.innerHTML = `Sorting Completed`
         mode = modes.done
     })
@@ -120,7 +130,7 @@ function updateVisualizerButton() {
 
 function plotGraph(unsorted=[]) {
     let graphBody = document.querySelector('#graph_body')
-    let nodeWidth = Math.floor(graphBody.offsetWidth/array.length*0.7)
+    let nodeWidth = Math.floor(graphBody.offsetWidth/array.length*0.6)
     graphBody.innerHTML = ''
     array.map( (number, index) => {
         graphBody.insertAdjacentHTML('beforeend', `<div class="node text-white text-center" id="node_${index}">${number}</div>`)
@@ -128,7 +138,10 @@ function plotGraph(unsorted=[]) {
         node.style.height = number+"px"
         node.style.width = nodeWidth+"px"
         node.style.fontSize = (nodeWidth/3)+"px"
-        if (unsorted.length && unsorted.includes(index)) node.classList.add('node-unsorted')
+        if (unsorted.length && unsorted.includes(index)) {
+            if (index === 2) node.classList.add('node-pivot')
+            else node.classList.add('node-unsorted')
+        }
     })
 }
 
@@ -139,32 +152,68 @@ function resetGraph() {
 }
 
 async function visualizeSortingAnimation(animation) {
+    console.log(animation)
     for (let set of animation) {
-        if (set.hasOwnProperty('indices')) {
-            let nodes = []
-            set.indices.map( index => {
-                nodes.push(document
-                    .querySelector('#graph_body')
-                    .querySelector(`#node_${index}`))
-            })
-            nodes.map(node =>  node.classList.add(set.sorted ? 'node-sorted' : 'node-unsorted'))
-            await sleep(SEARCH_TIME/animation.length)
-            if (!set.sorted) {
-                let temp = array[set.indices[1]]
-                for (let i=set.indices[1]; i>set.indices[0]; i--) {
-                    array[i] = array[i-1]
-                }
-                array[set.indices[0]] = temp
-                plotGraph(set.indices)
-                await sleep(SEARCH_TIME/(animation.length*2))
-                set.indices.map(index => {
-                    let node = document.querySelector('#graph_body').querySelector(`#node_${index}`)
-                    node.classList.remove('node-unsorted')
-                })
-                await sleep(SEARCH_TIME/(animation.length*2))
-            } else {
-                nodes.map((node, index) => node.classList.remove('node-sorted'))
-            }
+        if (set.indices.length===2) {
+            await visualizeDoubleNodes(set, animation)
+        } else if (set.indices.length===3) {
+            await visualizeTripleNodes(set, animation)
         }
+    }
+}
+
+async function visualizeDoubleNodes(set, animation) {
+    let nodes = []
+    set.indices.map( index => {
+        nodes.push(document
+            .querySelector('#graph_body')
+            .querySelector(`#node_${index}`))
+    })
+    nodes.map(node =>  node.classList.add(set.sorted ? 'node-sorted' : 'node-unsorted'))
+    await sleep(SEARCH_TIME/animation.length)
+    if (!set.sorted) {
+        let temp = array[set.indices[1]]
+        for (let i=set.indices[1]; i>set.indices[0]; i--) {
+            array[i] = array[i-1]
+        }
+        array[set.indices[0]] = temp
+        let newNodes = [set.indices[0], set.indices[0]+1]
+        plotGraph(newNodes)
+        await sleep(SEARCH_TIME/(animation.length*2))
+        newNodes.map(index => {
+            let node = document.querySelector('#graph_body').querySelector(`#node_${index}`)
+            node.classList.remove('node-unsorted')
+        })
+        await sleep(SEARCH_TIME/(animation.length*2))
+    } else {
+        nodes.map((node) => node.classList.remove('node-sorted'))
+    }
+}
+
+async function visualizeTripleNodes(set, animation) {
+    let nodes = []
+    set.indices.map( index => {
+        nodes.push(document
+            .querySelector('#graph_body')
+            .querySelector(`#node_${index}`))
+    })
+    nodes.map((node, index) => {
+        if (index===2) node.classList.add(set.sorted ? 'node-sorted' : 'node-pivot')
+        else node.classList.add(set.sorted ? 'node-sorted' : 'node-unsorted')
+    })
+    await sleep(SEARCH_TIME/animation.length)
+    if (!set.sorted) {
+        let temp = array[set.indices[1]]
+        array[set.indices[1]] = array[set.indices[0]]
+        array[set.indices[0]] = temp
+        set.indices[1]===set.indices[2] ? plotGraph([set.indices[0], set.indices[1]]) : plotGraph(set.indices)
+        await sleep(SEARCH_TIME/(animation.length*2))
+        set.indices.map(index => {
+            let node = document.querySelector('#graph_body').querySelector(`#node_${index}`)
+            node.classList.remove('node-unsorted', 'node-pivot')
+        })
+        await sleep(SEARCH_TIME/(animation.length*2))
+    } else {
+        nodes.map((node) => node.classList.remove('node-sorted'))
     }
 }

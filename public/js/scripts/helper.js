@@ -1,7 +1,7 @@
 function generateArray(length = 5) {
     let array = []
     for (let i=0; i<length; i++) {
-        array.push(randomNumber(5, 600))
+        array.push(randomNumber(5, 500))
     }
     return array
 }
