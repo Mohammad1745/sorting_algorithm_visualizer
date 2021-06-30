@@ -9,7 +9,7 @@ let algorithms = {
     insertionSort: {key:5, name: "Insertion Sort", description: `Insertion Sort`},
 }
 let mode = modes.initial
-let algorithm = algorithms.insertionSort
+let algorithm = algorithms.mergeSort
 
 const SEARCH_TIME = 10000
 const RUNNING_SORTING_MESSAGE = "Sorting is ongoing"
@@ -77,11 +77,11 @@ function visualizerButtonHandler () {
             let animation = []
             if (algorithm.key===algorithms.mergeSort.key) {
                 mergeSort.sort([...array], animation)
-                await visualizeSortingAnimation(animation, true)
+                await visualizer.mergeSort(animation)
             }
             if (algorithm.key===algorithms.quickSort.key) {
                 quickSort.sort([...array], animation)
-                await visualizeSortingAnimation(animation)
+                await visualizer.quickSort(animation)
             }
             if (algorithm.key===algorithms.bubbleSort.key) {
                 bubbleSort.sort([...array], animation)
@@ -186,7 +186,7 @@ function updateVisualizerButton() {
     statusMessage.innerHTML = ``
 }
 
-function plotGraph(unsorted=[]) {
+function plotGraph(unsortedNodes=[]) {
     let graphBody = document.querySelector('#graph_body')
     let nodeWidth = Math.floor(graphBody.offsetWidth/array.length*0.6)
     graphBody.innerHTML = ''
@@ -196,9 +196,10 @@ function plotGraph(unsorted=[]) {
         node.style.height = number+"px"
         node.style.width = nodeWidth+"px"
         node.style.fontSize = (nodeWidth/3)+"px"
-        if (unsorted.length && unsorted.includes(index)) {
-            if (unsorted[2] === index) node.classList.add('node-pivot')
-            else node.classList.add('node-unsorted')
+
+        let indices = unsortedNodes.filter(indices => indices.index===index)
+        if (unsortedNodes.length && indices.length) {
+            node.classList.add(indices[0].classList)
         }
     })
 }

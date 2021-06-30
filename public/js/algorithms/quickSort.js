@@ -1,7 +1,8 @@
 let quickSort = {
     sort: (array, animation, l=0, r) => {
         if (r===undefined) r=array.length-1
-        if (l>=r) return
+        if (l>=r) return //base case
+
         let pivot = quickSort.partition(array, animation, l, r)
         quickSort.sort(array, animation, l, pivot-1)
         quickSort.sort(array, animation, pivot+1, r)
