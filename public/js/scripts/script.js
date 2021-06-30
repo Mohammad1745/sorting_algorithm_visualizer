@@ -162,19 +162,6 @@ function sizeSliderHandler () {
     })
 }
 
-function algorithmInfoHandler() {
-    let algorithmInfoButton = document.querySelector('#graph_header').querySelector('.algorithm-info-btn')
-    algorithmInfoButton.addEventListener('click', event => {
-        let algorithmInfo = document.querySelector('#algorithm_info')
-        algorithmInfo.style.display = "flex"
-    })
-    let algorithmInfoCancelButton = document.querySelector('#algorithm_info_cancel_btn')
-    algorithmInfoCancelButton.addEventListener('click', event => {
-        let algorithmInfo = document.querySelector('#algorithm_info')
-        algorithmInfo.style.display = "none"
-    })
-}
-
 function customInputHandler() {
     let customInputButton = document.querySelector('#custom_input_btn')
     customInputButton.addEventListener('click', event => {
@@ -206,6 +193,19 @@ function customInputHandler() {
             plotGraph()
             customInputCancelButton.click()
         }
+    })
+}
+
+function algorithmInfoHandler() {
+    let algorithmInfoButton = document.querySelector('#graph_header').querySelector('.algorithm-info-btn')
+    algorithmInfoButton.addEventListener('click', event => {
+        let algorithmInfo = document.querySelector('#algorithm_info')
+        algorithmInfo.style.display = "flex"
+    })
+    let algorithmInfoCancelButton = document.querySelector('#algorithm_info_cancel_btn')
+    algorithmInfoCancelButton.addEventListener('click', event => {
+        let algorithmInfo = document.querySelector('#algorithm_info')
+        algorithmInfo.style.display = "none"
     })
 }
 
