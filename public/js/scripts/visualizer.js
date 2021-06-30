@@ -89,8 +89,8 @@ let visualizer = {
             await sleep(SEARCH_TIME/animation.length)
             if (!set.sorted) {
                 let newNodes = [];
-                newNodes.push({index: set.indices[0], className: 'node-position'})
-                newNodes.push({index: set.indices[0]+1, className: 'node-minimum'})
+                newNodes.push({index: set.indices[0], className: 'node-minimum'})
+                newNodes.push({index: set.indices[0]+1, className: 'node-position'})
                 switchElement(array, set.indices[0], set.indices[1])
                 plotGraph(newNodes)
                 await sleep(SEARCH_TIME/(animation.length*2))
@@ -113,8 +113,8 @@ let visualizer = {
             await sleep(SEARCH_TIME/animation.length)
             if (!set.sorted) {
                 let newNodes = [];
-                newNodes.push({index: set.indices[0], className: 'node-position'})
-                newNodes.push({index: set.indices[0]+1, className: 'node-scanner'})
+                newNodes.push({index: set.indices[0], className: 'node-scanner'})
+                newNodes.push({index: set.indices[0]+1, className: 'node-position'})
                 shiftElement(array, set.indices[0], set.indices[1])
                 plotGraph(newNodes)
                 await sleep(SEARCH_TIME/(animation.length*2))
