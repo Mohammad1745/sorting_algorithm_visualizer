@@ -1,5 +1,5 @@
 let array = [1]
-let arrayLength = 50
+let arrayLength = 7
 let modes = {initial: 1, sorting: 2, done:3}
 let algorithms = {
     mergeSort: {key:1, name: "Merge Sort", description: `The time complexity of Merge Sort is O(n*Log n) in all the 3 cases (worst, average and best).As the mergesort always divides the array into two halves and takes linear time to merge two halves. The space complexity of Merge sort is O(n).The space complexity of Merge sort is O(n). <br> <a href="https://youtu.be/TzeBrDU-JaY" target="_blank">Learn more...</a>`},
@@ -7,6 +7,7 @@ let algorithms = {
     bubbleSort: {key:3, name: "Bubble Sort", description: `The time complexity of Bubble Sort is O(n^2) in worst and average cases and O(n) in best case. It has the space complexity of O(1). <br> <a href="https://youtu.be/Jdtq5uKz-w4" target="_blank">Learn more...</a>`},
     selectionSort: {key:4, name: "Selection Sort", description: `The time complexity of Selection Sort is O(n^2) in worst and average cases and O(n^2) in best case. It has the space complexity of O(1). <br> <a href="https://youtu.be/GUDLRan2DWM" target="_blank">Learn more...</a>`},
     insertionSort: {key:5, name: "Insertion Sort", description: `The time complexity of Insertion Sort is O(n^2) in all the 3 cases (worst, average and best). It has the space complexity of O(1). <br> <a href="https://youtu.be/i-SKeOcBwko" target="_blank">Learn more...</a>`},
+    heapSort: {key:6, name: "Heap Sort", description: `The time complexity of Heap Sort is O(n*Log n) in all the 3 cases (worst, average and best). It has the space complexity of O(1). <br> <a href="https://youtu.be/HqPJF2L5h9U" target="_blank">Learn more...</a>`},
 }
 let indicatorPanelContent = {
     mergeSort: `<div class="node node-sorted node-example ml-3" id="sorted_node_example"></div><div class="text-light ml-2">Sorted</div>
@@ -33,7 +34,7 @@ let indicatorPanelContent = {
                     <div class="ml-3 text-light">|</div>`,
 }
 let mode = modes.initial
-let algorithm = algorithms.mergeSort
+let algorithm = algorithms.heapSort
 
 const SEARCH_TIME = 10000
 const RUNNING_SORTING_MESSAGE = "Sorting is ongoing"
@@ -100,6 +101,13 @@ function algorithmInputHandler() {
         updateIndicatorPanel()
         updateAlgorithmInfo()
     })
+    let heapSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.heapSort.key}`)
+    heapSortAlgorithm.addEventListener('click', () => {
+        algorithm = algorithms.heapSort
+        updateVisualizerButton()
+        updateIndicatorPanel()
+        updateAlgorithmInfo()
+    })
 }
 
 function visualizerButtonHandler () {
@@ -115,21 +123,25 @@ function visualizerButtonHandler () {
                 mergeSort.sort([...array], animation)
                 await visualizer.mergeSort(animation)
             }
-            if (algorithm.key===algorithms.quickSort.key) {
+            else if (algorithm.key===algorithms.quickSort.key) {
                 quickSort.sort([...array], animation)
                 await visualizer.quickSort(animation)
             }
-            if (algorithm.key===algorithms.bubbleSort.key) {
+            else if (algorithm.key===algorithms.bubbleSort.key) {
                 bubbleSort.sort([...array], animation)
                 await visualizer.bubbleSort(animation)
             }
-            if (algorithm.key===algorithms.selectionSort.key) {
+            else if (algorithm.key===algorithms.selectionSort.key) {
                 selectionSort.sort([...array], animation)
                 await visualizer.selectionSort(animation)
             }
-            if (algorithm.key===algorithms.insertionSort.key) {
+            else if (algorithm.key===algorithms.insertionSort.key) {
                 insertionSort.sort([...array], animation)
                 await visualizer.insertionSort(animation, true)
+            }
+            else if (algorithm.key===algorithms.heapSort.key) {
+                heapSort.sort([...array], animation)
+                // await visualizer.heapSort(animation, true)
             }
             let movesCount = animation.filter(set => !set.sorted).length
             statusMessage.innerHTML = `Sorting Completed | Total Moves: ${movesCount}`
