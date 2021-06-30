@@ -85,7 +85,7 @@ function visualizerButtonHandler () {
             }
             if (algorithm.key===algorithms.bubbleSort.key) {
                 bubbleSort.sort([...array], animation)
-                await visualizeSortingAnimation(animation, true)
+                await visualizer.bubbleSort(animation)
             }
             if (algorithm.key===algorithms.selectionSort.key) {
                 selectionSort.sort([...array], animation)
