@@ -12,7 +12,7 @@ let mode = modes.initial
 let algorithm = algorithms.insertionSort
 
 const SEARCH_TIME = 10000
-const RESET_GRAPH_MESSAGE = "Reset Graph First"
+const RUNNING_SORTING_MESSAGE = "Sorting is ongoing"
 
 document.addEventListener('DOMContentLoaded', () => {
     array = generateArray(arrayLength)
@@ -70,33 +70,35 @@ function visualizerButtonHandler () {
     let visualizerButton = document.querySelector('#visualize_btn')
     let statusMessage = document.querySelector('#status_message')
     visualizerButton.addEventListener('click', async event => {
-        mode = modes.sorting
-        statusMessage.innerHTML = ''
-        statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i>`)
-        let animation = []
-        if (algorithm.key===algorithms.mergeSort.key) {
-            mergeSort.sort([...array], animation)
-            await visualizeSortingAnimation(animation, true)
+        if (mode===modes.initial||mode===modes.done){
+            mode = modes.sorting
+            statusMessage.innerHTML = ''
+            statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i>`)
+            let animation = []
+            if (algorithm.key===algorithms.mergeSort.key) {
+                mergeSort.sort([...array], animation)
+                await visualizeSortingAnimation(animation, true)
+            }
+            if (algorithm.key===algorithms.quickSort.key) {
+                quickSort.sort([...array], animation)
+                await visualizeSortingAnimation(animation)
+            }
+            if (algorithm.key===algorithms.bubbleSort.key) {
+                bubbleSort.sort([...array], animation)
+                await visualizeSortingAnimation(animation, true)
+            }
+            if (algorithm.key===algorithms.selectionSort.key) {
+                selectionSort.sort([...array], animation)
+                await visualizeSortingAnimation(animation)
+            }
+            if (algorithm.key===algorithms.insertionSort.key) {
+                insertionSort.sort([...array], animation)
+                await visualizeSortingAnimation(animation, true)
+            }
+            let movesCount = animation.filter(set => !set.sorted).length
+            statusMessage.innerHTML = `Sorting Completed | Total Moves: ${movesCount}`
+            mode = modes.done
         }
-        if (algorithm.key===algorithms.quickSort.key) {
-            quickSort.sort([...array], animation)
-            await visualizeSortingAnimation(animation)
-        }
-        if (algorithm.key===algorithms.bubbleSort.key) {
-            bubbleSort.sort([...array], animation)
-            await visualizeSortingAnimation(animation, true)
-        }
-        if (algorithm.key===algorithms.selectionSort.key) {
-            selectionSort.sort([...array], animation)
-            await visualizeSortingAnimation(animation)
-        }
-        if (algorithm.key===algorithms.insertionSort.key) {
-            insertionSort.sort([...array], animation)
-            await visualizeSortingAnimation(animation, true)
-        }
-        let movesCount = animation.filter(set => !set.sorted).length
-        statusMessage.innerHTML = `Sorting Completed | Total Moves: ${movesCount}`
-        mode = modes.done
     })
 }
 
@@ -144,8 +146,11 @@ function algorithmInfoHandler() {
 function customInputHandler() {
     let customInputButton = document.querySelector('#custom_input_btn')
     customInputButton.addEventListener('click', event => {
-        let customInput = document.querySelector('#custom_input')
-        customInput.style.display = "flex"
+        if (mode===modes.initial||mode===modes.done){
+            let customInput = document.querySelector('#custom_input')
+            customInput.style.display = "flex"
+        }
+        else alert(RUNNING_SORTING_MESSAGE)
     })
     let customInputCancelButton = document.querySelector('#custom_input_cancel_btn')
     customInputCancelButton.addEventListener('click', event => {
