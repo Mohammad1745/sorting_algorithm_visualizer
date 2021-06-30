@@ -8,8 +8,32 @@ let algorithms = {
     selectionSort: {key:4, name: "Selection Sort", description: `Selection Sort`},
     insertionSort: {key:5, name: "Insertion Sort", description: `Insertion Sort`},
 }
+let indicatorPanelContent = {
+    mergeSort: `<div class="node node-sorted node-example ml-3" id="sorted_node_example"></div><div class="text-light ml-2">Sorted</div>
+                <div class="ml-3 text-light">|</div>
+                <div class="node node-unsorted node-example ml-3" id="unsorted_node_example"></div><div class="text-light ml-2">Unsorted</div>
+                <div class="ml-3 text-light">|</div>`,
+    quickSort: `<div class="node node-sorted node-example ml-3" id="sorted_node_example"></div><div class="text-light ml-2">Sorted</div>
+                <div class="ml-3 text-light">|</div>
+                <div class="node node-unsorted node-example ml-3" id="unsorted_node_example"></div><div class="text-light ml-2">Unsorted</div>
+                <div class="ml-3 text-light">|</div>
+                <div class="node node-pivot ml-3" id="pivot_node_example"></div><div class="text-light ml-2">Pivot</div>
+                <div class="ml-3 text-light">|</div>`,
+    bubbleSort: `<div class="node node-sorted node-example ml-3" id="sorted_node_example"></div><div class="text-light ml-2">Sorted</div>
+                <div class="ml-3 text-light">|</div>
+                <div class="node node-unsorted node-example ml-3" id="unsorted_node_example"></div><div class="text-light ml-2">Unsorted</div>
+                <div class="ml-3 text-light">|</div>`,
+    selectionSort: `<div class="node node-position ml-3" id="position_node_example"></div><div class="text-light ml-2">Position</div>
+                    <div class="ml-3 text-light">|</div>
+                    <div class="node node-minimum ml-3" id="minimum_node_example"></div><div class="text-light ml-2">Minimum</div>
+                    <div class="ml-3 text-light">|</div>`,
+    insertionSort: `<div class="node node-position ml-3" id="position_node_example"></div><div class="text-light ml-2">Position</div>
+                    <div class="ml-3 text-light">|</div>
+                    <div class="node node-scanner ml-3" id="scanner_node_example"></div><div class="text-light ml-2">Scanner</div>
+                    <div class="ml-3 text-light">|</div>`,
+}
 let mode = modes.initial
-let algorithm = algorithms.quickSort
+let algorithm = algorithms.mergeSort
 
 const SEARCH_TIME = 10000
 const RUNNING_SORTING_MESSAGE = "Sorting is ongoing"
@@ -18,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     array = generateArray(arrayLength)
     showAlgorithmList()
     updateVisualizerButton()
+    updateIndicatorPanel()
     plotGraph()
     handleUserEvent()
 })
@@ -43,26 +68,31 @@ function algorithmInputHandler() {
     mergeSortAlgorithm.addEventListener('click', () => {
         algorithm = algorithms.mergeSort
         updateVisualizerButton()
+        updateIndicatorPanel()
     })
     let quickSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.quickSort.key}`)
     quickSortAlgorithm.addEventListener('click', () => {
         algorithm = algorithms.quickSort
         updateVisualizerButton()
+        updateIndicatorPanel()
     })
     let bubbleSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.bubbleSort.key}`)
     bubbleSortAlgorithm.addEventListener('click', () => {
         algorithm = algorithms.bubbleSort
         updateVisualizerButton()
+        updateIndicatorPanel()
     })
     let selectionSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.selectionSort.key}`)
     selectionSortAlgorithm.addEventListener('click', () => {
         algorithm = algorithms.selectionSort
         updateVisualizerButton()
+        updateIndicatorPanel()
     })
     let insertionSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.insertionSort.key}`)
     insertionSortAlgorithm.addEventListener('click', () => {
         algorithm = algorithms.insertionSort
         updateVisualizerButton()
+        updateIndicatorPanel()
     })
 }
 
@@ -186,6 +216,16 @@ function updateVisualizerButton() {
     statusMessage.innerHTML = ``
 }
 
+function updateIndicatorPanel() {
+    let indicatorPanel = document.querySelector('#indicator_panel')
+    indicatorPanel.innerHTML = ''
+    let key = 'merge'
+    Object.keys(algorithms).map(index => {
+        if (algorithms[index] === algorithm) key = index
+    })
+    indicatorPanel.insertAdjacentHTML('beforeend', indicatorPanelContent[key])
+}
+
 function plotGraph(unsortedNodes=[]) {
     let graphBody = document.querySelector('#graph_body')
     let nodeWidth = Math.floor(graphBody.offsetWidth/array.length*0.6)
@@ -208,71 +248,4 @@ function resetGraph() {
     let graphBody = document.querySelector('#graph_body')
     graphBody.innerHTML = ''
     plotGraph()
-}
-
-async function visualizeSortingAnimation(animation, shift=false) {
-    for (let set of animation) {
-        let nodes = []
-        set.indices.map( index => {
-            nodes.push(document
-                .querySelector('#graph_body')
-                .querySelector(`#node_${index}`))
-        })
-        nodes.map((node, index) => {
-            if (index===2) node.classList.add(set.sorted ? 'node-sorted' : 'node-pivot')
-            else node.classList.add(set.sorted ? 'node-sorted' : 'node-unsorted')
-        })
-        if (set.indices.length===2) {
-            await visualizeDoubleNodes(set, nodes,animation, shift)
-        } else if (set.indices.length===3) {
-            await visualizeTripleNodes(set, nodes, animation)
-        }
-    }
-}
-
-async function visualizeDoubleNodes(set, nodes, animation, shift) {
-    await sleep(SEARCH_TIME/animation.length)
-    if (!set.sorted) {
-        let newNodes = []
-        let temp = array[set.indices[1]]
-        if (shift){
-            for (let i = set.indices[1]; i > set.indices[0]; i--) {
-                array[i] = array[i - 1]
-            }
-            array[set.indices[0]] = temp
-            newNodes = [set.indices[0], set.indices[0]+1]
-        }
-        else {
-            array[set.indices[1]] = array[set.indices[0]]
-            array[set.indices[0]] = temp
-            newNodes = [set.indices[0], set.indices[1]]
-        }
-        plotGraph(newNodes)
-        await sleep(SEARCH_TIME/(animation.length*2))
-        newNodes.map(index => {
-            let node = document.querySelector('#graph_body').querySelector(`#node_${index}`)
-            node.classList.remove('node-unsorted')
-        })
-        await sleep(SEARCH_TIME/(animation.length*2))
-    } else {
-        nodes.map((node) => node.classList.remove('node-sorted'))
-    }
-}
-
-async function visualizeTripleNodes(set, nodes, animation) {
-    await sleep(SEARCH_TIME/animation.length)
-    if (!set.sorted) {
-        let temp = array[set.indices[1]]
-        array[set.indices[1]] = array[set.indices[0]]
-        array[set.indices[0]] = temp
-        set.indices[1]===set.indices[2] ? plotGraph([set.indices[0], set.indices[1]]) : plotGraph(set.indices)
-        await sleep(SEARCH_TIME/(animation.length*2))
-        set.indices.map(index => {
-            let node = document.querySelector('#graph_body').querySelector(`#node_${index}`)
-            node.classList.remove('node-unsorted', 'node-pivot')
-        })
-        await sleep(SEARCH_TIME/(animation.length*2))
-    } else {
-        nodes.map((node) => node.classList.remove('node-sorted', 'node-pivot'))
-    }
 }
