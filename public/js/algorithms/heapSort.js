@@ -1,11 +1,8 @@
 let heapSort = {
     sort: (input, animation) => {
-        console.log(input, 'input')
-        heapSort.heapify(input) // O(n)
+        heapSort.heapify(input, animation) // O(n)
         // or createHeapWithInsertion(input) // O(n*log n)
-        console.log(input, 'heap')
-        heapSort.deleteHeap(input) // O(n*log n)
-        console.log(input, 'output')
+        heapSort.deleteHeap(input, animation) // O(n*log n)
     },
 
     createHeapWithInsertion: (array) => {
@@ -20,7 +17,7 @@ let heapSort = {
         }
     },
 
-    heapify: (array) => {
+    heapify: (array, animation) => {
         let arrayLength = array.length
         for (let i=arrayLength-1; i>=0; i--) {
             let nodeIndex = i
@@ -32,12 +29,15 @@ let heapSort = {
                 rightChildIndex < arrayLength && array[rightChildIndex] > array[nodeIndex]
             )
 
+            animation.push({indices: [nodeIndex], state:'creation'})
             while (condition) {
                 if (rightChildIndex >= arrayLength || array[leftChildIndex] > array[rightChildIndex]) {
+                    animation.push({indices:[nodeIndex, leftChildIndex], move:true, state:'creation'})
                     switchElement(array, nodeIndex, leftChildIndex)
                     nodeIndex = leftChildIndex
                 }
                 else {
+                    animation.push({indices:[nodeIndex, rightChildIndex], move:true, state:'creation'})
                     switchElement(array, nodeIndex, rightChildIndex)
                     nodeIndex = rightChildIndex
                 }
@@ -48,14 +48,17 @@ let heapSort = {
                     rightChildIndex < arrayLength && array[rightChildIndex] > array[nodeIndex]
                 )
             }
+            animation.push({refresh: true})
         }
     },
-
-    deleteHeap: (array) => {
+    //100, 150, 200, 250, 300, 350, 400
+    deleteHeap: (array, animation) => {
         for (let heapLength=array.length; heapLength>0; heapLength--) {
             let nodeIndex = 0
             let deletedNode = array[nodeIndex]
             array[nodeIndex] = array[heapLength-1]
+            animation.push({indices: [nodeIndex], state:'deletion'})
+            animation.push({indices: [nodeIndex, heapLength-1], move: true ,state:'deletion'})
 
             let leftChildIndex = heapSort.leftChildIndex(nodeIndex)
             let rightChildIndex = heapSort.rightChildIndex(nodeIndex)
@@ -67,10 +70,12 @@ let heapSort = {
 
             while (condition) {
                 if (rightChildIndex >= heapLength || array[leftChildIndex] > array[rightChildIndex]) {
+                    animation.push({indices:[nodeIndex, leftChildIndex], move:true, state:'switching'})
                     switchElement(array, nodeIndex, leftChildIndex)
                     nodeIndex = leftChildIndex
                 }
                 else {
+                    animation.push({indices:[nodeIndex, rightChildIndex], move:true, state:'switching'})
                     switchElement(array, nodeIndex, rightChildIndex)
                     nodeIndex = rightChildIndex
                 }
@@ -82,6 +87,7 @@ let heapSort = {
                 )
             }
             array[heapLength-1] = deletedNode
+            animation.push({refresh: true})
         }
     },
 

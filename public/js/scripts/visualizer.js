@@ -129,6 +129,38 @@ let visualizer = {
         }
     },
 
+    heapSort: async animation => {
+        for (let set of animation) {
+            if (set.refresh) plotGraph()
+            else if (set.indices.length===1) {
+                let nodes = visualizer.getNodes(set)
+                nodes[0].classList.add(set.state==='creation'? 'node-target' : 'node-deleted')
+                await sleep(SEARCH_TIME/animation.length*2)
+            }
+            else {
+                let nodes = visualizer.getNodes(set)
+                nodes[0].classList.add(set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))
+                nodes[1].classList.add( set.state==='switching'? 'node-target' : 'node-position')
+                await sleep(SEARCH_TIME/animation.length)
+                if (set.move) {
+                    let newNodes = [];
+                    newNodes.push({index: set.indices[0], className: set.state==='switching'? 'node-target' : 'node-position'})
+                    newNodes.push({index: set.indices[1], className: (set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))})
+                    switchElement(array, set.indices[0], set.indices[1])
+                    plotGraph(newNodes)
+                    await sleep(SEARCH_TIME/(animation.length))
+                    newNodes.map(nodeIndex => {
+                        let node = document.querySelector('#graph_body').querySelector(`#node_${nodeIndex.index}`)
+                        node.classList.remove('node-position')
+                    })
+                    await sleep(SEARCH_TIME/(animation.length*2))
+                } else {
+                    nodes.map((node) => node.classList.remove('node-sorted'))
+                }
+            }
+        }
+    },
+
     getNodes: set => {
         let nodes = []
         set.indices.map( index => {

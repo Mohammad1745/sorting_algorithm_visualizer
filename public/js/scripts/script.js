@@ -1,5 +1,5 @@
 let array = [1]
-let arrayLength = 7
+let arrayLength = 25
 let modes = {initial: 1, sorting: 2, done:3}
 let algorithms = {
     mergeSort: {key:1, name: "Merge Sort", description: `The time complexity of Merge Sort is O(n*Log n) in all the 3 cases (worst, average and best).As the mergesort always divides the array into two halves and takes linear time to merge two halves. The space complexity of Merge sort is O(n).The space complexity of Merge sort is O(n). <br> <a href="https://youtu.be/TzeBrDU-JaY" target="_blank">Learn more...</a>`},
@@ -32,11 +32,17 @@ let indicatorPanelContent = {
                     <div class="ml-3 text-light">|</div>
                     <div class="node node-scanner ml-3" id="scanner_node_example"></div><div class="text-light ml-2">Scanner</div>
                     <div class="ml-3 text-light">|</div>`,
+    heapSort: `<div class="node node-position ml-3" id="position_node_example"></div><div class="text-light ml-2">Position</div>
+                    <div class="ml-3 text-light">|</div>
+                    <div class="node node-target ml-3" id="target_node_example"></div><div class="text-light ml-2">Target</div>
+                    <div class="ml-3 text-light">|</div>
+                    <div class="node node-deleted ml-3" id="deleted_node_example"></div><div class="text-light ml-2">Deleted</div>
+                    <div class="ml-3 text-light">|</div>`,
 }
 let mode = modes.initial
 let algorithm = algorithms.heapSort
 
-const SEARCH_TIME = 10000
+const SEARCH_TIME = 20000
 const RUNNING_SORTING_MESSAGE = "Sorting is ongoing"
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -119,31 +125,37 @@ function visualizerButtonHandler () {
             statusMessage.innerHTML = ''
             statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i>`)
             let animation = []
+            let movesCount = 0
             if (algorithm.key===algorithms.mergeSort.key) {
                 mergeSort.sort([...array], animation)
                 await visualizer.mergeSort(animation)
+                movesCount = animation.filter(set => !set.sorted).length
             }
             else if (algorithm.key===algorithms.quickSort.key) {
                 quickSort.sort([...array], animation)
                 await visualizer.quickSort(animation)
+                movesCount = animation.filter(set => !set.sorted).length
             }
             else if (algorithm.key===algorithms.bubbleSort.key) {
                 bubbleSort.sort([...array], animation)
                 await visualizer.bubbleSort(animation)
+                movesCount = animation.filter(set => !set.sorted).length
             }
             else if (algorithm.key===algorithms.selectionSort.key) {
                 selectionSort.sort([...array], animation)
                 await visualizer.selectionSort(animation)
+                movesCount = animation.filter(set => !set.sorted).length
             }
             else if (algorithm.key===algorithms.insertionSort.key) {
                 insertionSort.sort([...array], animation)
-                await visualizer.insertionSort(animation, true)
+                await visualizer.insertionSort(animation)
+                movesCount = animation.filter(set => !set.sorted).length
             }
             else if (algorithm.key===algorithms.heapSort.key) {
                 heapSort.sort([...array], animation)
-                // await visualizer.heapSort(animation, true)
+                await visualizer.heapSort(animation)
+                movesCount = animation.filter(set => set.move).length
             }
-            let movesCount = animation.filter(set => !set.sorted).length
             statusMessage.innerHTML = `Sorting Completed | Total Moves: ${movesCount}`
             mode = modes.done
         }

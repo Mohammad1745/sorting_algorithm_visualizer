@@ -3,11 +3,13 @@
     --secondary: #777;
     --dark: #333;
     --sorted: #0053ACFF;
-    --unsorted: #FF53AC;
+    --unsorted: #DD53AC;
     --pivot: #DDFF55;
     --minimum: #55BB55;
     --position: #6666DD;
-    --scanner: #DD6666;
+    --scanner: #DD8888;
+    --target: #11FF11;
+    --deleted: #FF1111;
 }
 /*body {*/
 /*    background-color: var(--primary);*/
@@ -101,4 +103,10 @@ App
 }
 .node-scanner {
     background-color: var(--scanner);
+}
+.node-target {
+    background-color: var(--target);
+}
+.node-deleted {
+    background-color: var(--deleted);
 }
