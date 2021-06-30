@@ -2,11 +2,11 @@ let array = [1]
 let arrayLength = 50
 let modes = {initial: 1, sorting: 2, done:3}
 let algorithms = {
-    mergeSort: {key:1, name: "Merge Sort", description: `Merge Sort`},
-    quickSort: {key:2, name: "Quick Sort", description: `Quick Sort`},
-    bubbleSort: {key:3, name: "Bubble Sort", description: `Bubble Sort`},
-    selectionSort: {key:4, name: "Selection Sort", description: `Selection Sort`},
-    insertionSort: {key:5, name: "Insertion Sort", description: `Insertion Sort`},
+    mergeSort: {key:1, name: "Merge Sort", description: `The time complexity of MergeSort is O(n*Log n) in all the 3 cases (worst, average and best).As the mergesort always divides the array into two halves and takes linear time to merge two halves. The space complexity of Merge sort is O(n).The space complexity of Merge sort is O(n). <br> <a href="https://youtu.be/TzeBrDU-JaY" target="_blank">Learn more...</a>`},
+    quickSort: {key:2, name: "Quick Sort", description: `The time complexity of MergeSort is O(n^2) in worst case and O(n*Log n) in average and best cases. The in-place version of quicksort has a space complexity of O(log n), even in the worst case. This unstable partition requires O(1) space. <br> <a href="https://youtu.be/0SkOjNaO1XY" target="_blank">Learn more...</a>`},
+    bubbleSort: {key:3, name: "Bubble Sort", description: `The time complexity of MergeSort is O(n^2) in worst and average cases and O(n*Log n) in best case. It has the space complexity of O(1). <br> <a href="https://youtu.be/Jdtq5uKz-w4" target="_blank">Learn more...</a>`},
+    selectionSort: {key:4, name: "Selection Sort", description: `The time complexity of MergeSort is O(n^2) in worst and average cases and O(n*Log n) in best case. It has the space complexity of O(1). <br> <a href="https://youtu.be/GUDLRan2DWM" target="_blank">Learn more...</a>`},
+    insertionSort: {key:5, name: "Insertion Sort", description: `The time complexity of MergeSort is O(n^2) in worst and average cases and O(n*Log n) in best case. It has the space complexity of O(1). <br> <a href="https://youtu.be/i-SKeOcBwko" target="_blank">Learn more...</a>`},
 }
 let indicatorPanelContent = {
     mergeSort: `<div class="node node-sorted node-example ml-3" id="sorted_node_example"></div><div class="text-light ml-2">Sorted</div>
@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showAlgorithmList()
     updateVisualizerButton()
     updateIndicatorPanel()
+    updateAlgorithmInfo()
     plotGraph()
     handleUserEvent()
 })
@@ -69,30 +70,35 @@ function algorithmInputHandler() {
         algorithm = algorithms.mergeSort
         updateVisualizerButton()
         updateIndicatorPanel()
+        updateAlgorithmInfo()
     })
     let quickSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.quickSort.key}`)
     quickSortAlgorithm.addEventListener('click', () => {
         algorithm = algorithms.quickSort
         updateVisualizerButton()
         updateIndicatorPanel()
+        updateAlgorithmInfo()
     })
     let bubbleSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.bubbleSort.key}`)
     bubbleSortAlgorithm.addEventListener('click', () => {
         algorithm = algorithms.bubbleSort
         updateVisualizerButton()
         updateIndicatorPanel()
+        updateAlgorithmInfo()
     })
     let selectionSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.selectionSort.key}`)
     selectionSortAlgorithm.addEventListener('click', () => {
         algorithm = algorithms.selectionSort
         updateVisualizerButton()
         updateIndicatorPanel()
+        updateAlgorithmInfo()
     })
     let insertionSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.insertionSort.key}`)
     insertionSortAlgorithm.addEventListener('click', () => {
         algorithm = algorithms.insertionSort
         updateVisualizerButton()
         updateIndicatorPanel()
+        updateAlgorithmInfo()
     })
 }
 
@@ -160,10 +166,6 @@ function algorithmInfoHandler() {
     let algorithmInfoButton = document.querySelector('#graph_header').querySelector('.algorithm-info-btn')
     algorithmInfoButton.addEventListener('click', event => {
         let algorithmInfo = document.querySelector('#algorithm_info')
-        let algorithmInfoHeader = document.querySelector('#algorithm_info_header')
-        let algorithmInfoBody = document.querySelector('#algorithm_info_body')
-        algorithmInfoHeader.innerHTML = algorithm.name+" Algorithm"
-        algorithmInfoBody.innerHTML = algorithm.description
         algorithmInfo.style.display = "flex"
     })
     let algorithmInfoCancelButton = document.querySelector('#algorithm_info_cancel_btn')
@@ -224,6 +226,13 @@ function updateIndicatorPanel() {
         if (algorithms[index] === algorithm) key = index
     })
     indicatorPanel.insertAdjacentHTML('beforeend', indicatorPanelContent[key])
+}
+
+function updateAlgorithmInfo() {
+    let algorithmInfoHeader = document.querySelector('#algorithm_info_header')
+    let algorithmInfoBody = document.querySelector('#algorithm_info_body')
+    algorithmInfoHeader.innerHTML = algorithm.name+" Algorithm"
+    algorithmInfoBody.innerHTML = algorithm.description
 }
 
 function plotGraph(unsortedNodes=[]) {
