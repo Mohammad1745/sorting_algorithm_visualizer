@@ -89,11 +89,11 @@ function visualizerButtonHandler () {
             }
             if (algorithm.key===algorithms.selectionSort.key) {
                 selectionSort.sort([...array], animation)
-                await visualizeSortingAnimation(animation)
+                await visualizer.selectionSort(animation)
             }
             if (algorithm.key===algorithms.insertionSort.key) {
                 insertionSort.sort([...array], animation)
-                await visualizeSortingAnimation(animation, true)
+                await visualizer.insertionSort(animation, true)
             }
             let movesCount = animation.filter(set => !set.sorted).length
             statusMessage.innerHTML = `Sorting Completed | Total Moves: ${movesCount}`

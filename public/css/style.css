@@ -3,8 +3,11 @@
     --secondary: #777;
     --dark: #333;
     --sorted: #0053ACFF;
-    --pivot: #DDFF55;
     --unsorted: #FF53AC;
+    --pivot: #DDFF55;
+    --minimum: #55BB55;
+    --position: #6666DD;
+    --scanner: #DD6666;
 }
 /*body {*/
 /*    background-color: var(--primary);*/
@@ -89,4 +92,13 @@ App
 }
 .node-pivot {
     background-color: var(--pivot);
+}
+.node-minimum {
+    background-color: var(--minimum);
+}
+.node-position {
+    background-color: var(--position);
+}
+.node-scanner {
+    background-color: var(--scanner);
 }
