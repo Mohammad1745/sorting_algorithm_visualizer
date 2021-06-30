@@ -9,7 +9,7 @@ let algorithms = {
     insertionSort: {key:5, name: "Insertion Sort", description: `Insertion Sort`},
 }
 let mode = modes.initial
-let algorithm = algorithms.mergeSort
+let algorithm = algorithms.quickSort
 
 const SEARCH_TIME = 10000
 const RUNNING_SORTING_MESSAGE = "Sorting is ongoing"
@@ -199,7 +199,7 @@ function plotGraph(unsortedNodes=[]) {
 
         let indices = unsortedNodes.filter(indices => indices.index===index)
         if (unsortedNodes.length && indices.length) {
-            node.classList.add(indices[0].classList)
+            node.classList.add(indices[0].className)
         }
     })
 }
