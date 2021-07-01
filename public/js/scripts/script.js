@@ -7,7 +7,7 @@ let algorithms = {
     bubbleSort: {key:3, name: "Bubble Sort", description: `The time complexity of Bubble Sort is O(n^2) in worst and average cases and O(n) in best case. It has the space complexity of O(1). <br> <a href="https://youtu.be/Jdtq5uKz-w4" target="_blank">Learn more...</a>`},
     selectionSort: {key:4, name: "Selection Sort", description: `The time complexity of Selection Sort is O(n^2) in worst and average cases and O(n^2) in best case. It has the space complexity of O(1). <br> <a href="https://youtu.be/GUDLRan2DWM" target="_blank">Learn more...</a>`},
     insertionSort: {key:5, name: "Insertion Sort", description: `The time complexity of Insertion Sort is O(n^2) in all the 3 cases (worst, average and best). It has the space complexity of O(1). <br> <a href="https://youtu.be/i-SKeOcBwko" target="_blank">Learn more...</a>`},
-    heapSort: {key:6, name: "Heap Sort", description: `The time complexity of Heap Sort is O(n*Log n) in all the 3 cases (worst, average and best). It has the space complexity of O(1). <br> <a href="https://youtu.be/HqPJF2L5h9U" target="_blank">Learn more...</a>`},
+    heapSort: {key:6, name: "Heap Sort", description: `The time complexity of Heap Sort is O(n*Log n) in all the 3 cases (worst, average and best). It has the space complexity of O(1). <br> <a href="https://youtu.be/HqPJF2L5h9U" target="_blank">Learn more...</a><br> App has a BT Representation of Heap Sort for array length less than 32. `},
 }
 let indicatorPanelContent = {
     mergeSort: `<div class="node node-sorted node-example ml-3" id="sorted_node_example"></div><div class="text-light ml-2">Sorted</div>
