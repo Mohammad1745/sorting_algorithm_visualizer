@@ -8,7 +8,7 @@ App: <a target="_blank">https://mohammad1745.github.io/sorting_algorithm_visuali
 
 This application supports the following algorithms:
 
-**Merge Sort Algorithm** : The time complexity of Merge Sort is O(n*Log n) in all the 3 cases (worst, average and best).As the mergesort always divides the array into two halves and takes linear time to merge two halves. The space complexity of Merge sort is O(n).The space complexity of Merge sort is O(n). <br> <a href="https://youtu.be/TzeBrDU-JaY" target="_blank">Learn more...</a>
+**Merge Sort Algorithm** : The time complexity of Merge Sort is O(n*Log n) in all the 3 cases (worst, average and best). As the mergesort always divides the array into two halves and takes linear time to merge two halves. The space complexity of Merge sort is O(n).The space complexity of Merge sort is O(n). <br> <a href="https://youtu.be/TzeBrDU-JaY" target="_blank">Learn more...</a>
 
 **Quick Sort Algorithm** : The time complexity of Quick Sort is O(n^2) in worst case and O(n*Log n) in average and best cases. The in-place version of quicksort has a space complexity of O(log n), even in the worst case. This unstable partition requires O(1) space. <br> <a href="https://youtu.be/0SkOjNaO1XY" target="_blank">Learn more...</a>
 
