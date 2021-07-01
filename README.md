@@ -18,4 +18,8 @@ This application supports the following algorithms:
 
 **Insertion Sort Algorithm** : The time complexity of Insertion Sort is O(n^2) in all the 3 cases (worst, average and best). It has the space complexity of O(1). <br> <a href="https://youtu.be/i-SKeOcBwko" target="_blank">Learn more...</a>
 
+**Heap Sort Algorithm** : The time complexity of Heap Sort is O(n*Log n) in all the 3 cases (worst, average and best). It has the space complexity of O(1). <br> <a href="https://youtu.be/HqPJF2L5h9U" target="_blank">Learn more...</a>
+
+***Heap Sort** has a **Binary Tree** Representation also for array size less than **32***
+
 Beside the auto generated array, user can input a custom array to sort.
