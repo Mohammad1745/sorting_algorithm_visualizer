@@ -1,5 +1,5 @@
 let array = [1]
-let arrayLength = 32
+let arrayLength = 25
 let modes = {initial: 1, sorting: 2, done:3}
 let algorithms = {
     mergeSort: {key:1, name: "Merge Sort", description: `The time complexity of Merge Sort is O(n*Log n) in all the 3 cases (worst, average and best). As the mergesort always divides the array into two halves and takes linear time to merge two halves. The space complexity of Merge sort is O(n).The space complexity of Merge sort is O(n). <br> <a href="https://youtu.be/TzeBrDU-JaY" target="_blank">Learn more...</a>`},
@@ -153,9 +153,11 @@ function visualizerButtonHandler () {
             }
             else if (algorithm.key===algorithms.heapSort.key) {
                 heapSort.sort([...array], animation)
-                statusMessage.innerHTML = ''
-                statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i> | Binary Tree Representation`)
-                if (array.length<32) await animator.heapSort([...array], animation)
+                if (array.length<32) {
+                    statusMessage.innerHTML = ''
+                    statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i> | Binary Tree Representation`)
+                    await animator.heapSort([...array], animation)
+                }
                 statusMessage.innerHTML = ''
                 statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i> | Bar Chart Representation`)
                 await visualizer.heapSort(animation)
