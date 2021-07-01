@@ -1,7 +1,7 @@
-let animator = {
+let binaryTreeAnimator = {
     heapSort: async (array ,animation) => {
         let sorted = []
-        await animator.plotScreen( array, sorted)
+        await binaryTreeAnimator.plotScreen( array, sorted)
         await sleep(SEARCH_TIME/animation.length*5)
 
         let treeHeader = document.querySelector('#graph_body').querySelector('#tree_header')
@@ -16,21 +16,21 @@ let animator = {
             if (state==='deletion'){
                 treeHeader.innerHTML = `Binary Tree Representation | Sorting: Deleting From Heap`
             }
-            if (set.refresh) await animator.plotScreen(array, sorted)
+            if (set.refresh) await binaryTreeAnimator.plotScreen(array, sorted)
             else if (set.indices.length===1) {
-                let nodes = animator.getNodes(set)
+                let nodes = binaryTreeAnimator.getNodes(set)
                 nodes[0].classList.add(set.state==='creation'? 'node-target' : 'node-deleted')
                 await sleep(SEARCH_TIME/animation.length*2)
             }
             else {
-                await animator.animateMovement(array, animation, set, sorted)
+                await binaryTreeAnimator.animateMovement(array, animation, set, sorted)
             }
         }
         treeHeader.innerHTML = `Binary Tree Representation | Sorting Completed: Left to Right <br> Watch now on Bar Chart`
     },
 
     animateMovement:  async (array, animation, set, sorted) => {
-        let nodes = animator.getNodes(set)
+        let nodes = binaryTreeAnimator.getNodes(set)
         nodes[0].classList.add(set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))
         nodes[1].classList.add( set.state==='switching'? 'node-target' : 'node-position')
         await sleep(SEARCH_TIME/animation.length)
@@ -39,13 +39,13 @@ let animator = {
             newNodes.push({index: set.indices[0], className: set.state==='switching'? 'node-target' : 'node-position'})
             newNodes.push({index: set.indices[1], className: (set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))})
             switchElement(array, set.indices[0], set.indices[1])
-            await animator.plotScreen(array, sorted, newNodes, 'switch')
+            await binaryTreeAnimator.plotScreen(array, sorted, newNodes, 'switch')
             // await sleep(SEARCH_TIME/(animation.length*2))
             if (set.state==='deletion') {
                 sorted.push(array[set.indices[1]])
                 array.splice(set.indices[1], 1)
             }
-            await animator.plotScreen(array, sorted, newNodes, set.state)
+            await binaryTreeAnimator.plotScreen(array, sorted, newNodes, set.state)
             await sleep(SEARCH_TIME/(animation.length))
             newNodes.map(nodeIndex => {
                 let node = document.querySelector('#graph_body').querySelector(`#tree_node_${nodeIndex.index}`)
@@ -66,17 +66,17 @@ let animator = {
         }
         let treeBody = graphBody.querySelector('#tree-body')
         if (state==='switch') {
-            await animator.animateSwitch(treeBody, unsortedNodes)
+            await binaryTreeAnimator.animateSwitch(treeBody, unsortedNodes)
         }
         treeBody.innerHTML = ''
 
         let treeHeight = Math.ceil(Math.log2(array.length))
         for (let h = 0; h <= treeHeight; h++) {
             treeBody.insertAdjacentHTML('beforeend', `<div class="tree-node-row row m-0" id="tree_node_row_${h}" data-row="${h}"></div>`)
-            await animator.plotTreeNodes(array, treeHeight, h, nodeWidth, treeBody, unsortedNodes, state)
+            await binaryTreeAnimator.plotTreeNodes(array, treeHeight, h, nodeWidth, treeBody, unsortedNodes, state)
         }
         if(sorted.length){
-            await animator.plotSortedNodes(sorted, nodeWidth, state)
+            await binaryTreeAnimator.plotSortedNodes(sorted, nodeWidth, state)
         }
 
     },
@@ -109,9 +109,9 @@ let animator = {
 
             let node = nodeRow.querySelector(`#tree_node_${index}`)
             let nodeConnector = nodeRow.querySelector(`#tree_node_connector_${index}`)
-            animator.setNodeStyle(node, index, nodeWidth, treeHeight, h)
+            binaryTreeAnimator.setNodeStyle(node, index, nodeWidth, treeHeight, h)
             if (nodeConnector) {
-                animator.setNodeConnectorStyle(nodeConnector, index, nodeWidth, treeHeight, h)
+                binaryTreeAnimator.setNodeConnectorStyle(nodeConnector, index, nodeWidth, treeHeight, h)
             }
             let indices = unsortedNodes.filter(indices => indices.index === index)
             if (unsortedNodes.length && indices.length) {

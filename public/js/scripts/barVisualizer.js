@@ -1,15 +1,15 @@
-let visualizer = {
+let barVisualizer = {
     mergeSort: async animation => {
         let sleepTime = SEARCH_TIME/(animation.length)
         for (let set of animation) {
-            let nodes = visualizer.getNodes(set)
+            let nodes = barVisualizer.getNodes(set)
             nodes.map((node, index) => node.classList.add(set.sorted ? 'node-sorted' : 'node-unsorted'))
             await sleep(sleepTime)
             if (!set.sorted) {
                 let newNodes = [];
                 newNodes.push({index: set.indices[0], className: 'node-unsorted'})
                 newNodes.push({index: set.indices[1], className: 'node-unsorted'})
-                await visualizer.animateShift(newNodes, sleepTime)
+                await barVisualizer.animateShift(newNodes, sleepTime)
                 newNodes.pop()
                 newNodes.push({index: set.indices[0]+1, className: 'node-unsorted'})
                 shiftElement(array, set.indices[0], set.indices[1])
@@ -29,7 +29,7 @@ let visualizer = {
     quickSort: async animation => {
         let sleepTime = SEARCH_TIME/(animation.length)
         for (let set of animation) {
-            let nodes = visualizer.getNodes(set)
+            let nodes = barVisualizer.getNodes(set)
             nodes.map((node, index) => {
                 if (index===0) node.classList.add('node-pivot')
                 else node.classList.add(set.sorted ? 'node-sorted' : 'node-unsorted')
@@ -41,7 +41,7 @@ let visualizer = {
                 newNodes.push({index: set.indices[1], className: 'node-unsorted'})
                 if (set.indices.length>2) {
                     newNodes.push({index: set.indices[2], className: 'node-unsorted'})
-                    await visualizer.animateSwitch([{index: set.indices[1]}, {index: set.indices[2]}])
+                    await barVisualizer.animateSwitch([{index: set.indices[1]}, {index: set.indices[2]}])
                     switchElement(array, set.indices[1], set.indices[2])
                     plotGraph(newNodes)
                 }
@@ -49,7 +49,7 @@ let visualizer = {
                     let temp = newNodes[0].className
                     newNodes[0].className = newNodes[1].className
                     newNodes[1].className = temp
-                    await visualizer.animateSwitch([{index: set.indices[1]}, {index: set.indices[0]}])
+                    await barVisualizer.animateSwitch([{index: set.indices[1]}, {index: set.indices[0]}])
                     switchElement(array, set.indices[1], set.indices[0])
                     plotGraph(newNodes)
                 }
@@ -68,14 +68,14 @@ let visualizer = {
     bubbleSort: async animation => {
         let sleepTime = SEARCH_TIME/(animation.length)
         for (let set of animation) {
-            let nodes = visualizer.getNodes(set)
+            let nodes = barVisualizer.getNodes(set)
             nodes.map((node, index) => node.classList.add(set.sorted ? 'node-sorted' : 'node-unsorted'))
             await sleep(sleepTime)
             if (!set.sorted) {
                 let newNodes = [];
                 newNodes.push({index: set.indices[0], className: 'node-unsorted'})
                 newNodes.push({index: set.indices[1], className: 'node-unsorted'})
-                await visualizer.animateSwitch(newNodes, sleepTime/2)
+                await barVisualizer.animateSwitch(newNodes, sleepTime/2)
                 switchElement(array, set.indices[0], set.indices[1])
                 plotGraph(newNodes)
                 await sleep(sleepTime/2)
@@ -93,7 +93,7 @@ let visualizer = {
     selectionSort: async animation => {
         let sleepTime = SEARCH_TIME/(animation.length*2)
         for (let set of animation) {
-            let nodes = visualizer.getNodes(set)
+            let nodes = barVisualizer.getNodes(set)
             nodes[0].classList.add(set.sorted ? 'node-sorted' : 'node-position')
             nodes[1].classList.add(set.sorted ? 'node-sorted' : 'node-minimum')
             await sleep(sleepTime)
@@ -101,7 +101,7 @@ let visualizer = {
                 let newNodes = [];
                 newNodes.push({index: set.indices[0], className: 'node-minimum'})
                 newNodes.push({index: set.indices[1], className: 'node-position'})
-                await visualizer.animateSwitch(newNodes, sleepTime/2)
+                await barVisualizer.animateSwitch(newNodes, sleepTime/2)
                 switchElement(array, set.indices[0], set.indices[1])
                 plotGraph(newNodes)
                 await sleep(sleepTime/2)
@@ -119,7 +119,7 @@ let visualizer = {
     insertionSort: async animation => {
         let sleepTime = SEARCH_TIME/(animation.length*2)
         for (let set of animation) {
-            let nodes = visualizer.getNodes(set)
+            let nodes = barVisualizer.getNodes(set)
             nodes[0].classList.add(set.sorted ? 'node-sorted' : 'node-position')
             nodes[1].classList.add(set.sorted ? 'node-sorted' : 'node-scanner')
             await sleep(sleepTime)
@@ -127,7 +127,7 @@ let visualizer = {
                 let newNodes = [];
                 newNodes.push({index: set.indices[0], className: 'node-scanner'})
                 newNodes.push({index: set.indices[1], className: 'node-position'})
-                await visualizer.animateShift(newNodes, sleepTime)
+                await barVisualizer.animateShift(newNodes, sleepTime)
                 newNodes.pop()
                 newNodes.push({index: set.indices[0]+1, className: 'node-position'})
                 shiftElement(array, set.indices[0], set.indices[1])
@@ -150,12 +150,12 @@ let visualizer = {
         for (let set of animation) {
             if (set.refresh) plotGraph()
             else if (set.indices.length===1) {
-                let nodes = visualizer.getNodes(set)
+                let nodes = barVisualizer.getNodes(set)
                 nodes[0].classList.add(set.state==='creation'? 'node-target' : 'node-deleted')
                 await sleep(sleepTime/2)
             }
             else {
-                let nodes = visualizer.getNodes(set)
+                let nodes = barVisualizer.getNodes(set)
                 nodes[0].classList.add(set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))
                 nodes[1].classList.add( set.state==='switching'? 'node-target' : 'node-position')
                 await sleep(sleepTime)
@@ -163,7 +163,7 @@ let visualizer = {
                     let newNodes = [];
                     newNodes.push({index: set.indices[0], className: set.state==='switching'? 'node-target' : 'node-position'})
                     newNodes.push({index: set.indices[1], className: (set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))})
-                    await visualizer.animateSwitch(newNodes, sleepTime)
+                    await barVisualizer.animateSwitch(newNodes, sleepTime)
                     switchElement(array, set.indices[0], set.indices[1])
                     plotGraph(newNodes)
                     await sleep(sleepTime)

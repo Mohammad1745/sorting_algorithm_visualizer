@@ -138,39 +138,39 @@ function visualizerButtonHandler () {
             let movesCount = 0
             if (algorithm.key===algorithms.mergeSort.key) {
                 mergeSort.sort([...array], animation)
-                await visualizer.mergeSort(animation)
+                await barVisualizer.mergeSort(animation)
                 movesCount = animation.filter(set => !set.sorted).length
             }
             else if (algorithm.key===algorithms.quickSort.key) {
                 quickSort.sort([...array], animation)
-                await visualizer.quickSort(animation)
+                await barVisualizer.quickSort(animation)
                 movesCount = animation.filter(set => !set.sorted).length
             }
             else if (algorithm.key===algorithms.bubbleSort.key) {
                 bubbleSort.sort([...array], animation)
-                await visualizer.bubbleSort(animation)
+                await barVisualizer.bubbleSort(animation)
                 movesCount = animation.filter(set => !set.sorted).length
             }
             else if (algorithm.key===algorithms.selectionSort.key) {
                 selectionSort.sort([...array], animation)
-                await visualizer.selectionSort(animation)
+                await barVisualizer.selectionSort(animation)
                 movesCount = animation.filter(set => !set.sorted).length
             }
             else if (algorithm.key===algorithms.insertionSort.key) {
                 insertionSort.sort([...array], animation)
-                await visualizer.insertionSort(animation)
+                await barVisualizer.insertionSort(animation)
                 movesCount = animation.filter(set => !set.sorted).length
             }
             else if (algorithm.key===algorithms.heapSort.key) {
                 heapSort.sort([...array], animation)
-                // if (array.length<32) {
-                //     statusMessage.innerHTML = ''
-                //     statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i> | Binary Tree Representation`)
-                //     await animator.heapSort([...array], animation)
-                // }
+                if (array.length<32) {
+                    statusMessage.innerHTML = ''
+                    statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i> | Binary Tree Representation`)
+                    await binaryTreeAnimator.heapSort([...array], animation)
+                }
                 statusMessage.innerHTML = ''
                 statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i> | Bar Chart Representation`)
-                await visualizer.heapSort(animation)
+                await barVisualizer.heapSort(animation)
                 movesCount = animation.filter(set => set.move).length
             }
             statusMessage.innerHTML = `Sorting Completed | Total Moves: ${movesCount}`
