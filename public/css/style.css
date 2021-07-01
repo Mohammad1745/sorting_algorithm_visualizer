@@ -56,6 +56,9 @@ App
     border-top: var(--primary) 1px solid;
     border-bottom: var(--primary) 1px solid;
 }
+.bar-chart {
+    justify-content: center;
+}
 .node {
     margin: 0 2px;
     height: 20px;
@@ -66,25 +69,27 @@ App
     background-color: var(--secondary);
 }
 
-.custom-input,
-.algorithm-info {
-    display: none;
+.tree {
     position: absolute;
-    top: 125px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    min-width: 25%;
-    z-index: 100;
+    left: 5%;
+    bottom: 10%;
+    display: inline-block;
+    padding: 10px;
+    background-color: rgba(125, 125, 125, .2);
 }
-.custom-input-header,
-.algorithm-info-header {
-    font-weight: bold;
-    font-size: 20px;
+.tree .node{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
 }
-.custom-input-cancel-btn,
-.algorithm-info-cancel-btn {
-    position: relative;
-    float: right;
+.tree .node-connector {
+    margin: 0px;
+    height: 20px;
+    width: 2px;
+    border-radius: 0;
+    border: none;
+    background-color: var(--primary);
 }
 .node-sorted {
     background-color: var(--sorted);
@@ -109,4 +114,28 @@ App
 }
 .node-deleted {
     background-color: var(--deleted);
+}
+
+.algorithm-info-btn{
+    color: #2277DD;
+}
+.custom-input,
+.algorithm-info {
+    display: none;
+    position: absolute;
+    top: 125px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    min-width: 25%;
+    z-index: 100;
+}
+.custom-input-header,
+.algorithm-info-header {
+    font-weight: bold;
+    font-size: 20px;
+}
+.custom-input-cancel-btn,
+.algorithm-info-cancel-btn {
+    position: relative;
+    float: right;
 }

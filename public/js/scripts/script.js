@@ -153,6 +153,11 @@ function visualizerButtonHandler () {
             }
             else if (algorithm.key===algorithms.heapSort.key) {
                 heapSort.sort([...array], animation)
+                statusMessage.innerHTML = ''
+                statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i> | Binary Tree Representation`)
+                if (array.length<50) await animator.heapSort([...array], animation)
+                statusMessage.innerHTML = ''
+                statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i> | Bar Chart Representation`)
                 await visualizer.heapSort(animation)
                 movesCount = animation.filter(set => set.move).length
             }
@@ -169,7 +174,7 @@ function resetButtonHandler () {
             let statusMessage = document.querySelector('#status_message')
             statusMessage.innerHTML = ''
             array = generateArray(arrayLength)
-            resetGraph()
+            plotGraph()
             mode = modes.initial
         }
     })
@@ -181,7 +186,7 @@ function sizeSliderHandler () {
         if (mode===modes.initial||mode===modes.done){
             arrayLength = sizeSlider.value
             array = generateArray(arrayLength)
-            resetGraph()
+            plotGraph()
         }
     })
 }
@@ -262,10 +267,13 @@ function updateAlgorithmInfo() {
 function plotGraph(unsortedNodes=[]) {
     let graphBody = document.querySelector('#graph_body')
     let nodeWidth = Math.floor(graphBody.offsetWidth/array.length*0.6)
-    graphBody.innerHTML = ''
+    let barChart = graphBody.querySelector('#bar_chart')
+    if (!barChart) graphBody.insertAdjacentHTML('beforeend', `<div class="bar-chart row m-0" id="bar_chart"></div>`)
+    barChart = graphBody.querySelector('#bar_chart')
+    barChart.innerHTML = ''
     array.map( (number, index) => {
-        graphBody.insertAdjacentHTML('beforeend', `<div class="node text-white text-center" id="node_${index}">${number}</div>`)
-        let node = graphBody.querySelector(`#node_${index}`)
+        barChart.insertAdjacentHTML('beforeend', `<div class="node text-white text-center" id="node_${index}">${number}</div>`)
+        let node = barChart.querySelector(`#node_${index}`)
         node.style.height = number+"px"
         node.style.width = nodeWidth+"px"
         node.style.fontSize = (nodeWidth/3)+"px"
@@ -275,10 +283,4 @@ function plotGraph(unsortedNodes=[]) {
             node.classList.add(indices[0].className)
         }
     })
-}
-
-function resetGraph() {
-    let graphBody = document.querySelector('#graph_body')
-    graphBody.innerHTML = ''
-    plotGraph()
 }

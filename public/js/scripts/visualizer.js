@@ -130,6 +130,7 @@ let visualizer = {
     },
 
     heapSort: async animation => {
+        await sleep(1300)
         for (let set of animation) {
             if (set.refresh) plotGraph()
             else if (set.indices.length===1) {
