@@ -31,16 +31,16 @@ let binaryTreeAnimator = {
 
     animateMovement:  async (array, animation, set, sorted) => {
         let nodes = binaryTreeAnimator.getNodes(set)
-        nodes[0].classList.add(set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))
-        nodes[1].classList.add( set.state==='switching'? 'node-target' : 'node-position')
+        nodes[0].classList.add(set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-target' :'node-deleted'))
+        nodes[1].classList.add( set.state==='switching'? 'node-position' : 'node-position')
         await sleep(SEARCH_TIME/animation.length)
         if (set.move) {
             let newNodes = [];
-            newNodes.push({index: set.indices[0], className: set.state==='switching'? 'node-target' : 'node-position'})
-            newNodes.push({index: set.indices[1], className: (set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))})
+            newNodes.push({index: set.indices[0], className: set.state==='switching'? 'node-position' : 'node-position'})
+            newNodes.push({index: set.indices[1], className: (set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-target' :'node-deleted'))})
+            await binaryTreeAnimator.animateSwitch(newNodes)
             switchElement(array, set.indices[0], set.indices[1])
-            await binaryTreeAnimator.plotScreen(array, sorted, newNodes, 'switch')
-            // await sleep(SEARCH_TIME/(animation.length*2))
+            await binaryTreeAnimator.plotScreen(array, sorted, newNodes)
             if (set.state==='deletion') {
                 sorted.push(array[set.indices[1]])
                 array.splice(set.indices[1], 1)
@@ -62,13 +62,16 @@ let binaryTreeAnimator = {
         let nodeWidth = Math.floor(graphBody.offsetWidth/(array.length+sorted.length)*0.5)
         let tree = graphBody.querySelector('#tree')
         if (!tree) {
-            graphBody.insertAdjacentHTML('beforeend', `<div class="tree" id="tree"><div class="tree-header text-white" id="tree_header">Binary Tree Representation</div><div class="tree-body" id="tree-body"></div><div class="tree-footer row m-0 mt-5" id="tree_footer"></div></div>`)
+            graphBody.insertAdjacentHTML('beforeend', `<div class="tree" id="tree"><div class="tree-header text-white" id="tree_header">Binary Tree Representation</div><div class="tree-body" id="tree_body"></div><div class="tree-footer row m-0 mt-5" id="tree_footer"></div></div>`)
         }
-        let treeBody = graphBody.querySelector('#tree-body')
-        if (state==='switch') {
-            await binaryTreeAnimator.animateSwitch(treeBody, unsortedNodes)
-        }
+        let treeBody = graphBody.querySelector('#tree_body')
+        let treeFooter = graphBody.querySelector('#tree_footer')
         treeBody.innerHTML = ''
+        treeFooter.style.minHeight = (nodeWidth+4)+"px"
+        if (!sorted.length) {
+            let treeFooter = graphBody.querySelector('#tree_footer')
+            treeFooter.innerHTML = ''
+        }
 
         let treeHeight = Math.ceil(Math.log2(array.length))
         for (let h = 0; h <= treeHeight; h++) {
@@ -81,10 +84,10 @@ let binaryTreeAnimator = {
 
     },
 
-    animateSwitch: async (treeBody, unsortedNodes) => {
+    animateSwitch: async (unsortedNodes) => {
         let switchingNodes = [
-            treeBody.querySelector(`#tree_node_${unsortedNodes[0].index}`),
-            treeBody.querySelector(`#tree_node_${unsortedNodes[1].index}`)
+            document.querySelector(`#tree_node_${unsortedNodes[0].index}`),
+            document.querySelector(`#tree_node_${unsortedNodes[1].index}`)
         ]
         let nodePositions = [getOffset(switchingNodes[0]), getOffset(switchingNodes[1])]
         let topMovement = nodePositions[1].top-nodePositions[0].top
@@ -131,7 +134,7 @@ let binaryTreeAnimator = {
             await sleep(500)
             treeFooter.innerHTML = ''
             for (let index=0; index<sorted.length; index++){
-                treeFooter.insertAdjacentHTML('afterbegin', `<div class="node text-white text-center" id="tree_sorted_node_${index}">${sorted[index]}</div>`)
+                treeFooter.insertAdjacentHTML('afterbegin', `<div class="node tree-sorted-node text-white text-center" id="tree_sorted_node_${index}">${sorted[index]}</div>`)
                 let node = treeFooter.querySelector(`#tree_sorted_node_${index}`)
                 node.style.marginLeft = (nodeWidth*0.1) +"px"
                 node.style.height = nodeWidth + "px"
@@ -174,6 +177,6 @@ let binaryTreeAnimator = {
         }
         nodeConnector.style.position = "relative"
         nodeConnector.style.top = -((margin+nodeWidth*0.5)*0.2-5) + "px"
-        nodeConnector.style.height = (margin*0.5)+5 + "px"
+        nodeConnector.style.height = (margin*0.5)+10 + "px"
     }
 }

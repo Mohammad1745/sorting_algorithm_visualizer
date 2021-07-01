@@ -156,13 +156,13 @@ let barVisualizer = {
             }
             else {
                 let nodes = barVisualizer.getNodes(set)
-                nodes[0].classList.add(set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))
-                nodes[1].classList.add( set.state==='switching'? 'node-target' : 'node-position')
+                nodes[0].classList.add(set.state==='creation'? 'node-position' : (set.state==='switching'? 'node-target' :'node-deleted'))
+                nodes[1].classList.add( set.state==='switching'? 'node-position' : 'node-position')
                 await sleep(sleepTime)
                 if (set.move) {
                     let newNodes = [];
-                    newNodes.push({index: set.indices[0], className: set.state==='switching'? 'node-target' : 'node-position'})
-                    newNodes.push({index: set.indices[1], className: (set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))})
+                    newNodes.push({index: set.indices[0], className: set.state==='switching'? 'node-position' : 'node-position'})
+                    newNodes.push({index: set.indices[1], className: (set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-target' :'node-deleted'))})
                     await barVisualizer.animateSwitch(newNodes, sleepTime)
                     switchElement(array, set.indices[0], set.indices[1])
                     plotGraph(newNodes)
@@ -180,7 +180,7 @@ let barVisualizer = {
     },
 
     animateSwitch: async (unsortedNodes, sleepTime) => {
-        sleepTime = sleepTime>100 ? sleepTime : 0
+        sleepTime = sleepTime>150 ? sleepTime : 150
         let switchingNodes = [
             document.querySelector('#graph_body').querySelector(`#node_${unsortedNodes[0].index}`),
             document.querySelector('#graph_body').querySelector(`#node_${unsortedNodes[1].index}`)
@@ -189,14 +189,14 @@ let barVisualizer = {
         let topMovement = nodePositions[1].top-nodePositions[0].top
         let leftMovement = nodePositions[1].left-nodePositions[0].left
         switchingNodes[0].style.transition = (sleepTime*0.8)+"ms"
-        switchingNodes[0].style.transform = "translate("+(leftMovement)+"px,"+(topMovement)+"px)"
+        switchingNodes[0].style.transform = "translate("+(leftMovement)+"px, 0)"
         switchingNodes[1].style.transition = (sleepTime*0.8)+"ms"
-        switchingNodes[1].style.transform = "translate("+(-leftMovement)+"px,"+(-topMovement)+"px)"
+        switchingNodes[1].style.transform = "translate("+(-leftMovement)+"px, 0)"
         await sleep(sleepTime)
     },
 
     animateShift: async (unsortedNodes, sleepTime) => {
-        sleepTime = sleepTime>100 ? sleepTime : 0
+        sleepTime = sleepTime>100 ? sleepTime : 100
         let shiftedNodes = [
             document.querySelector('#graph_body').querySelector(`#node_${unsortedNodes[0].index}`),
             document.querySelector('#graph_body').querySelector(`#node_${unsortedNodes[1].index}`)

@@ -6,10 +6,10 @@
     --unsorted: #DD53AC;
     --pivot: #DDFF55;
     --minimum: #55BB55;
-    --position: #6666DD;
+    --position: #5555DD;
     --scanner: #DD8888;
-    --target: #11FF11;
-    --deleted: #FF1111;
+    --target: #55CC55;
+    --deleted: #CC5555;
 }
 /*body {*/
 /*    background-color: var(--primary);*/
@@ -99,6 +99,11 @@ App
 }
 .tree-footer {
     width: 100%;
+    padding: 5px;
+    border: var(--primary) 1px solid;
+}
+.tree-sorted-node{
+    background-color: var(--deleted);
 }
 
 .node-sorted {
