@@ -22,34 +22,38 @@ let animator = {
                 await sleep(SEARCH_TIME/animation.length*2)
             }
             else {
-                let nodes = animator.getNodes(set)
-                nodes[0].classList.add(set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))
-                nodes[1].classList.add( set.state==='switching'? 'node-target' : 'node-position')
-                await sleep(SEARCH_TIME/animation.length)
-                if (set.move) {
-                    let newNodes = [];
-                    newNodes.push({index: set.indices[0], className: set.state==='switching'? 'node-target' : 'node-position'})
-                    newNodes.push({index: set.indices[1], className: (set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))})
-                    switchElement(array, set.indices[0], set.indices[1])
-                    await animator.plotScreen(array, sorted, newNodes)
-                    await sleep(SEARCH_TIME/(animation.length*2))
-                    if (set.state==='deletion') {
-                        sorted.push(array[set.indices[1]])
-                        array.splice([set.indices[1]], 1)
-                    }
-                    await animator.plotScreen(array, sorted, newNodes, set.state==='deletion')
-                    await sleep(SEARCH_TIME/(animation.length))
-                    newNodes.map(nodeIndex => {
-                        let node = document.querySelector('#graph_body').querySelector(`#tree_node_${nodeIndex.index}`)
-                        if(node!==null) node.classList.remove('node-position')
-                    })
-                    await sleep(SEARCH_TIME/(animation.length*2))
-                } else {
-                    nodes.map((node) => node.classList.remove('node-sorted'))
-                }
+                await animator.animateMove(array, animation, set, sorted)
             }
         }
         treeHeader.innerHTML = `Binary Tree Representation | Sorting Completed: Left to Right <br> Watch now on Bar Chart`
+    },
+
+    animateMove:  async (array, animation, set, sorted) => {
+        let nodes = animator.getNodes(set)
+        nodes[0].classList.add(set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))
+        nodes[1].classList.add( set.state==='switching'? 'node-target' : 'node-position')
+        await sleep(SEARCH_TIME/animation.length)
+        if (set.move) {
+            let newNodes = [];
+            newNodes.push({index: set.indices[0], className: set.state==='switching'? 'node-target' : 'node-position'})
+            newNodes.push({index: set.indices[1], className: (set.state==='creation'? 'node-target' : (set.state==='switching'? 'node-position' :'node-deleted'))})
+            switchElement(array, set.indices[0], set.indices[1])
+            await animator.plotScreen(array, sorted, newNodes)
+            await sleep(SEARCH_TIME/(animation.length*2))
+            if (set.state==='deletion') {
+                sorted.push(array[set.indices[1]])
+                array.splice(set.indices[1], 1)
+            }
+            await animator.plotScreen(array, sorted, newNodes, set.state==='deletion')
+            await sleep(SEARCH_TIME/(animation.length))
+            newNodes.map(nodeIndex => {
+                let node = document.querySelector('#graph_body').querySelector(`#tree_node_${nodeIndex.index}`)
+                if(node!==null) node.classList.remove('node-position')
+            })
+            await sleep(SEARCH_TIME/(animation.length*2))
+        } else {
+            nodes.map((node) => node.classList.remove('node-sorted'))
+        }
     },
 
     plotScreen: async (array, sorted, unsortedNodes=[], isDeletion=false) => {
@@ -63,49 +67,57 @@ let animator = {
         let treeHeight = Math.ceil(Math.log2(array.length))
         for (let h = 0; h <= treeHeight; h++) {
             treeBody.insertAdjacentHTML('beforeend', `<div class="tree-node-row row m-0" id="tree_node_row_${h}" data-row="${h}"></div>`)
-            let nodeRow = treeBody.querySelector(`#tree_node_row_${h}`)
-            for (let index = 2 ** h - 1; index <= 2 * (2 ** h - 1); index++) {
-                if (index >= array.length) break
-
-                let number = array[index]
-                if (index > 0) {
-                    nodeRow.insertAdjacentHTML('beforeend', `<div class="node node-connector" id="tree_node_connector_${index}"></div>`)
-                }
-                nodeRow.insertAdjacentHTML('beforeend', `<div class="node text-white text-center" id="tree_node_${index}">${number}</div>`)
-
-                let node = nodeRow.querySelector(`#tree_node_${index}`)
-                let nodeConnector = nodeRow.querySelector(`#tree_node_connector_${index}`)
-                animator.setNodeStyle(node, index, nodeWidth, treeHeight, h)
-                if (nodeConnector) {
-                    animator.setNodeConnectorStyle(nodeConnector, index, nodeWidth, treeHeight, h)
-                }
-                let indices = unsortedNodes.filter(indices => indices.index === index)
-                if (unsortedNodes.length && indices.length) {
-                    node.classList.add(indices[0].className)
-                }
-            }
+            await animator.plotTreeNodes(array, treeHeight, h, nodeWidth, treeBody, unsortedNodes)
         }
         if(sorted.length){
-            let treeFooter = graphBody.querySelector('#tree_footer')
-            if (isDeletion) {
-                for (let index=0; index<sorted.length-1; index++){
-                    let node = treeFooter.querySelector(`#tree_sorted_node_${index}`)
-                    node.style.transition = "400ms"
-                    node.style.transform = "translate("+(nodeWidth*1.1+2)+"px, 0)"
-                }
-                await sleep(500)
-                treeFooter.innerHTML = ''
-                for (let index=0; index<sorted.length; index++){
-                    treeFooter.insertAdjacentHTML('afterbegin', `<div class="node text-white text-center" id="tree_sorted_node_${index}">${sorted[index]}</div>`)
-                    let node = treeFooter.querySelector(`#tree_sorted_node_${index}`)
-                    node.style.marginLeft = (nodeWidth*0.1) +"px"
-                    node.style.height = nodeWidth + "px"
-                    node.style.width = nodeWidth + "px"
-                    node.style.fontSize = (nodeWidth / 3) + "px"
-                }
-            }
+            await animator.plotSortedNodes(sorted, nodeWidth, isDeletion)
         }
 
+    },
+
+    plotTreeNodes: async (array, treeHeight, h, nodeWidth, treeBody, unsortedNodes) => {
+        let nodeRow = treeBody.querySelector(`#tree_node_row_${h}`)
+        for (let index = 2 ** h - 1; index <= 2 * (2 ** h - 1); index++) {
+            if (index >= array.length) break
+
+            let number = array[index]
+            if (index > 0) {
+                nodeRow.insertAdjacentHTML('beforeend', `<div class="node node-connector" id="tree_node_connector_${index}"></div>`)
+            }
+            nodeRow.insertAdjacentHTML('beforeend', `<div class="node text-white text-center" id="tree_node_${index}">${number}</div>`)
+
+            let node = nodeRow.querySelector(`#tree_node_${index}`)
+            let nodeConnector = nodeRow.querySelector(`#tree_node_connector_${index}`)
+            animator.setNodeStyle(node, index, nodeWidth, treeHeight, h)
+            if (nodeConnector) {
+                animator.setNodeConnectorStyle(nodeConnector, index, nodeWidth, treeHeight, h)
+            }
+            let indices = unsortedNodes.filter(indices => indices.index === index)
+            if (unsortedNodes.length && indices.length) {
+                node.classList.add(indices[0].className)
+            }
+        }
+    },
+
+    plotSortedNodes: async (sorted, nodeWidth, isDeletion) => {
+        let treeFooter = document.querySelector('#graph_body').querySelector('#tree_footer')
+        if (isDeletion) {
+            for (let index=0; index<sorted.length-1; index++){
+                let node = treeFooter.querySelector(`#tree_sorted_node_${index}`)
+                node.style.transition = "400ms"
+                node.style.transform = "translate("+(nodeWidth*1.1+2)+"px, 0)"
+            }
+            await sleep(500)
+            treeFooter.innerHTML = ''
+            for (let index=0; index<sorted.length; index++){
+                treeFooter.insertAdjacentHTML('afterbegin', `<div class="node text-white text-center" id="tree_sorted_node_${index}">${sorted[index]}</div>`)
+                let node = treeFooter.querySelector(`#tree_sorted_node_${index}`)
+                node.style.marginLeft = (nodeWidth*0.1) +"px"
+                node.style.height = nodeWidth + "px"
+                node.style.width = nodeWidth + "px"
+                node.style.fontSize = (nodeWidth / 3) + "px"
+            }
+        }
     },
 
     getNodes: set => {
