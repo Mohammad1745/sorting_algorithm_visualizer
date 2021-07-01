@@ -81,38 +81,48 @@ function algorithmInputHandler() {
     })
     let quickSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.quickSort.key}`)
     quickSortAlgorithm.addEventListener('click', () => {
-        algorithm = algorithms.quickSort
-        updateVisualizerButton()
-        updateIndicatorPanel()
-        updateAlgorithmInfo()
+        if (mode===modes.initial||mode===modes.done){
+            algorithm = algorithms.quickSort
+            updateVisualizerButton()
+            updateIndicatorPanel()
+            updateAlgorithmInfo()
+        }
     })
     let bubbleSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.bubbleSort.key}`)
     bubbleSortAlgorithm.addEventListener('click', () => {
-        algorithm = algorithms.bubbleSort
-        updateVisualizerButton()
-        updateIndicatorPanel()
-        updateAlgorithmInfo()
+        if (mode===modes.initial||mode===modes.done){
+            algorithm = algorithms.bubbleSort
+            updateVisualizerButton()
+            updateIndicatorPanel()
+            updateAlgorithmInfo()
+        }
     })
     let selectionSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.selectionSort.key}`)
     selectionSortAlgorithm.addEventListener('click', () => {
-        algorithm = algorithms.selectionSort
-        updateVisualizerButton()
-        updateIndicatorPanel()
-        updateAlgorithmInfo()
+        if (mode===modes.initial||mode===modes.done){
+            algorithm = algorithms.selectionSort
+            updateVisualizerButton()
+            updateIndicatorPanel()
+            updateAlgorithmInfo()
+        }
     })
     let insertionSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.insertionSort.key}`)
     insertionSortAlgorithm.addEventListener('click', () => {
-        algorithm = algorithms.insertionSort
-        updateVisualizerButton()
-        updateIndicatorPanel()
-        updateAlgorithmInfo()
+        if (mode===modes.initial||mode===modes.done){
+            algorithm = algorithms.insertionSort
+            updateVisualizerButton()
+            updateIndicatorPanel()
+            updateAlgorithmInfo()
+        }
     })
     let heapSortAlgorithm = document.querySelector('#algorithm_list').querySelector(`#algorithm_${algorithms.heapSort.key}`)
     heapSortAlgorithm.addEventListener('click', () => {
-        algorithm = algorithms.heapSort
-        updateVisualizerButton()
-        updateIndicatorPanel()
-        updateAlgorithmInfo()
+        if (mode===modes.initial||mode===modes.done){
+            algorithm = algorithms.heapSort
+            updateVisualizerButton()
+            updateIndicatorPanel()
+            updateAlgorithmInfo()
+        }
     })
 }
 
