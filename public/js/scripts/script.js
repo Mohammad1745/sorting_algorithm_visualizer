@@ -170,12 +170,14 @@ function visualizerButtonHandler () {
 }
 
 function resetButtonHandler () {
+    let graphBody = document.querySelector('#graph_body')
     let resetButton = document.querySelector('#reset_btn')
     resetButton.addEventListener('click', async event => {
         if (mode===modes.initial||mode===modes.done){
             let statusMessage = document.querySelector('#status_message')
             statusMessage.innerHTML = ''
             array = generateArray(arrayLength)
+            graphBody.innerHTML = ''
             plotGraph()
             mode = modes.initial
         }
@@ -183,11 +185,13 @@ function resetButtonHandler () {
 }
 
 function sizeSliderHandler () {
+    let graphBody = document.querySelector('#graph_body')
     let sizeSlider = document.querySelector('#size_slider')
     sizeSlider.addEventListener('input', event => {
         if (mode===modes.initial||mode===modes.done){
             arrayLength = sizeSlider.value
             array = generateArray(arrayLength)
+            graphBody.innerHTML = ''
             plotGraph()
         }
     })
