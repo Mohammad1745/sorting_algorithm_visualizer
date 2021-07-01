@@ -163,11 +163,11 @@ function visualizerButtonHandler () {
             }
             else if (algorithm.key===algorithms.heapSort.key) {
                 heapSort.sort([...array], animation)
-                if (array.length<32) {
-                    statusMessage.innerHTML = ''
-                    statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i> | Binary Tree Representation`)
-                    await animator.heapSort([...array], animation)
-                }
+                // if (array.length<32) {
+                //     statusMessage.innerHTML = ''
+                //     statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i> | Binary Tree Representation`)
+                //     await animator.heapSort([...array], animation)
+                // }
                 statusMessage.innerHTML = ''
                 statusMessage.insertAdjacentHTML('beforeend', `Sorting <i class="fas fa-spinner"></i> | Bar Chart Representation`)
                 await visualizer.heapSort(animation)
