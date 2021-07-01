@@ -91,13 +91,14 @@ let animator = {
                 for (let index=0; index<sorted.length-1; index++){
                     let node = treeFooter.querySelector(`#tree_sorted_node_${index}`)
                     node.style.transition = "400ms"
-                    node.style.transform = "translate("+nodeWidth+"px, 0)"
+                    node.style.transform = "translate("+(nodeWidth*1.1+2)+"px, 0)"
                 }
                 await sleep(500)
                 treeFooter.innerHTML = ''
                 for (let index=0; index<sorted.length; index++){
-                    treeFooter.insertAdjacentHTML('afterbegin', `<div class="node text-white text-center m-1" id="tree_sorted_node_${index}">${sorted[index]}</div>`)
+                    treeFooter.insertAdjacentHTML('afterbegin', `<div class="node text-white text-center" id="tree_sorted_node_${index}">${sorted[index]}</div>`)
                     let node = treeFooter.querySelector(`#tree_sorted_node_${index}`)
+                    node.style.marginLeft = (nodeWidth*0.1) +"px"
                     node.style.height = nodeWidth + "px"
                     node.style.width = nodeWidth + "px"
                     node.style.fontSize = (nodeWidth / 3) + "px"
