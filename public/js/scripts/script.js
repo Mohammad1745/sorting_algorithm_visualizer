@@ -40,7 +40,7 @@ let indicatorPanelContent = {
                     <div class="ml-3 text-light">|</div>`,
 }
 let mode = modes.initial
-let algorithm = algorithms.heapSort
+let algorithm = algorithms.mergeSort
 
 const SEARCH_TIME = 20000
 const RUNNING_SORTING_MESSAGE = "Sorting is ongoing"
